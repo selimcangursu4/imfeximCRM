@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'meta' => [
+        'graph_version' => env('META_GRAPH_VERSION', 'v17.0'),
+        'webhook_verify_token' => env('META_WEBHOOK_VERIFY_TOKEN'),
+    ],
+
 ];
