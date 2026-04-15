@@ -36,20 +36,16 @@
                     <div class="dropdown-menu">
                         <!-- Header -->
                         <div class="dropdown-header noti-title">
-                            <h6 class="text-overflow m-0">Welcome back!</h6>
+                            <h6 class="text-overflow m-0">Hoşgeldin!</h6>
                         </div>
 
                         <!-- My Profile -->
                         <a href="profile.html" class="dropdown-item">
                             <i class="ti ti-user-circle me-2 fs-17 align-middle"></i>
-                            <span class="align-middle">Profile</span>
+                            <span class="align-middle">Profilim</span>
                         </a>
 
-                        <!-- Notifications -->
-                        <a href="javascript:void(0);" class="dropdown-item">
-                            <i class="ti ti-bell-ringing me-2 fs-17 align-middle"></i>
-                            <span class="align-middle">Notifications</span>
-                        </a>
+
 
                         <!-- Settings -->
                         <a href="javascript:void(0);" class="dropdown-item">
@@ -60,22 +56,18 @@
                         <!-- Support -->
                         <a href="javascript:void(0);" class="dropdown-item">
                             <i class="ti ti-headset me-2 fs-17 align-middle"></i>
-                            <span class="align-middle">Support Center</span>
+                            <span class="align-middle">Destek Talep Et</span>
                         </a>
 
                         <!-- Divider -->
                         <div class="dropdown-divider"></div>
 
-                        <!-- Lock -->
-                        <a href="auth-lock-screen.html" class="dropdown-item">
-                            <i class="ti ti-lock me-2 fs-17 align-middle"></i>
-                            <span class="align-middle">Lock Screen</span>
-                        </a>
+
 
                         <!-- Logout -->
                         <a href="javascript:void(0);" class="dropdown-item fw-semibold">
                             <i class="ti ti-logout-2 me-2 fs-17 align-middle"></i>
-                            <span class="align-middle">Log Out</span>
+                            <span class="align-middle">Çıkış Yap</span>
                         </a>
                     </div>
                 </div>
