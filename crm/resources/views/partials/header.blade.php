@@ -29,48 +29,6 @@
         </div> <!-- .d-flex-->
 
         <div class="d-flex align-items-center gap-2">
-            <!-- Language Dropdown -->
-            <div class="topbar-item">
-                <div class="dropdown">
-                    <button class="topbar-link fw-bold" data-bs-toggle="dropdown" data-bs-offset="0,24" type="button"
-                        aria-haspopup="false" aria-expanded="false">
-                        <img src="assets/images/flags/us.svg" alt="user-image" class="rounded" height="20"
-                            id="selected-language-image">
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-end">
-                        <a href="javascript:void(0);" class="dropdown-item" data-translator-lang="en" title="English">
-                            <img src="assets/images/flags/us.svg" alt="English" class="me-1 rounded" height="18"
-                                data-translator-image>
-                            <span class="align-middle">English</span>
-                        </a>
-                        <a href="javascript:void(0);" class="dropdown-item" data-translator-lang="de" title="German">
-                            <img src="assets/images/flags/de.svg" alt="German" class="me-1 rounded" height="18"
-                                data-translator-image>
-                            <span class="align-middle">Deutsch</span>
-                        </a>
-                        <a href="javascript:void(0);" class="dropdown-item" data-translator-lang="it" title="Italian">
-                            <img src="assets/images/flags/it.svg" alt="Italian" class="me-1 rounded" height="18"
-                                data-translator-image>
-                            <span class="align-middle">Italiano</span>
-                        </a>
-                        <a href="javascript:void(0);" class="dropdown-item" data-translator-lang="es" title="Spanish">
-                            <img src="assets/images/flags/es.svg" alt="Spanish" class="me-1 rounded" height="18"
-                                data-translator-image>
-                            <span class="align-middle">Español</span>
-                        </a>
-                        <a href="javascript:void(0);" class="dropdown-item" data-translator-lang="ru" title="Russian">
-                            <img src="assets/images/flags/ru.svg" alt="Russian" class="me-1 rounded" height="18"
-                                data-translator-image>
-                            <span class="align-middle">Русский</span>
-                        </a>
-                        <a href="javascript:void(0);" class="dropdown-item" data-translator-lang="hi" title="Hindi">
-                            <img src="assets/images/flags/in.svg" alt="Hindi" class="me-1 rounded" height="18"
-                                data-translator-image>
-                            <span class="align-middle">हिन्दी</span>
-                        </a>
-                    </div> <!-- end dropdown-menu-->
-                </div> <!-- end dropdown-->
-            </div> <!-- end topbar item-->
 
             <!-- Notification Dropdown -->
             <div class="topbar-item">

@@ -52,7 +52,10 @@ class OmnichannelController extends Controller
             }
         }
 
-        return view('omnichannel.index', compact('conversations', 'selectedConversation'));
+        $companyId = auth()->user()->company_id ?? 1;
+        $quickReplies = \App\Models\QuickReply::where('company_id', $companyId)->get();
+
+        return view('omnichannel.index', compact('conversations', 'selectedConversation', 'quickReplies'));
     }
 
     public function show(Conversation $conversation)

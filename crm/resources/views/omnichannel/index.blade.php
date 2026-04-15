@@ -125,17 +125,49 @@
 
                 <div class="card-footer bg-body-secondary border-top border-dashed border-bottom-0 position-absolute bottom-0 w-100">
                     @if($selectedConversation)
-                        <form action="{{ route('omnichannel.message.store', $selectedConversation) }}" method="post">
+                        <div class="mb-2 d-flex align-items-center gap-2">
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="ti ti-list-check fs-lg"></i> Hazır Mesajlar
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-start shadow-lg border-light" style="max-height: 300px; overflow-y: auto; width: 250px;">
+                                    @forelse($quickReplies as $reply)
+                                        <li>
+                                            <a class="dropdown-item py-2 border-bottom border-light-subtle" href="javascript:void(0);" onclick="useQuickReply(`{{ addslashes($reply->content) }}`)">
+                                                <div class="fw-bold fs-xs text-primary mb-1">{{ $reply->title }}</div>
+                                                <div class="text-muted text-truncate fs-xxs">{{ Str::limit($reply->content, 40) }}</div>
+                                            </a>
+                                        </li>
+                                    @empty
+                                        <li class="px-3 py-2 text-muted fs-xs">Hazır mesaj bulunamadı.</li>
+                                    @endforelse
+                                </ul>
+                            </div>
+                        </div>
+
+                        <form id="chat-form" action="{{ route('omnichannel.message.store', $selectedConversation) }}" method="post">
                             @csrf
                             <div class="d-flex gap-2">
                                 <div class="app-search flex-grow-1">
-                                    <textarea data-chat-input class="form-control py-2 bg-light-subtle border-light" name="body" rows="2" placeholder="Mesajınızı Yazın..." required></textarea>
+                                    <textarea id="chat-textarea" data-chat-input class="form-control py-2 bg-light-subtle border-light" name="body" rows="2" placeholder="Mesajınızı Yazın..." required></textarea>
                                     <i data-lucide="message-square" class="app-search-icon text-muted"></i>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Mesaj Gönder <i class="ti ti-send-2 ms-1 fs-xl"></i></button>
                             </div>
-                            <span data-error class="d-none text-danger mt-2">Hi there!</span>
+                            <span data-error class="d-none text-danger mt-2"></span>
                         </form>
+
+                        <script>
+                            function useQuickReply(content) {
+                                const textarea = document.getElementById('chat-textarea');
+                                if (textarea) {
+                                    textarea.value = content;
+                                    textarea.focus();
+                                    // Trigger input event for any listeners (like auto-expand or character counts)
+                                    textarea.dispatchEvent(new Event('input', { bubbles: true }));
+                                }
+                            }
+                        </script>
                     @else
                         <div class="text-center py-3 text-muted">Bir sohbet seçin veya yeni sohbet başlatın.</div>
                     @endif
