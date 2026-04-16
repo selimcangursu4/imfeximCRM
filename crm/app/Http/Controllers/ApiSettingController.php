@@ -22,7 +22,11 @@ class ApiSettingController extends Controller
             abort(404, 'Firma bulunamadı.');
         }
 
-        $data = $request->validate([
+        $request->validate([
+            'ai.api_key' => 'nullable|string|max:2000',
+            'ai.engine' => 'nullable|in:openai,gemini',
+            'ai.enabled' => 'sometimes|boolean',
+
             'instagram.app_id' => 'nullable|string|max:255',
             'instagram.app_secret' => 'nullable|string|max:255',
             'instagram.access_token' => 'nullable|string|max:2000',
@@ -40,16 +44,26 @@ class ApiSettingController extends Controller
             'whatsapp.enabled' => 'sometimes|boolean',
         ]);
 
-        foreach (['instagram', 'whatsapp'] as $provider) {
+        $providers = ['instagram', 'whatsapp', 'ai'];
+
+        foreach ($providers as $provider) {
+            $data = $request->input($provider, []);
+            
+            $enabled = isset($data['enabled']) && $data['enabled'] == '1';
+            unset($data['enabled']);
+
             CompanyApiSetting::updateOrCreate(
-                ['company_id' => $company->id, 'provider' => $provider],
                 [
-                    'settings' => $request->input($provider, []),
-                    'enabled' => $request->boolean($provider . '.enabled'),
+                    'company_id' => $company->id,
+                    'provider' => $provider
+                ],
+                [
+                    'enabled' => $enabled,
+                    'settings' => $enabled ? $data : [], 
                 ]
             );
         }
 
-        return back()->with('success', 'Meta API ayarları kaydedildi.');
+        return redirect()->back()->with('success', 'API ayarlarınız başarıyla güncellendi. İstekler seçilen yapay zeka servisine ve platforma gönderilecektir.');
     }
 }

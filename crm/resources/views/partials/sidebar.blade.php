@@ -84,9 +84,9 @@
             </li>
 
             <li class="side-nav-item">
-                <a href="#" class="side-nav-link">
+                <a href="{{ route('sales-funnel.index') }}" class="side-nav-link">
                     <span class="menu-icon"><i data-lucide="funnel"></i></span>
-                    <span class="menu-text" data-lang="dashboards">Satış Hunisi</span>
+                    <span class="menu-text">Satış Hunisi</span>
                 </a>
             </li>
 
@@ -103,7 +103,19 @@
                 </a>
             </li>
             <li class="side-nav-item">
-                <a href="{{ route('customers.index') }}" class="side-nav-link">
+                <a href="{{ route('knowledge-bases.index') }}" class="side-nav-link">
+                    <span class="menu-icon"><i data-lucide="book-open"></i></span>
+                    <span class="menu-text">Bilgi Bankası</span>
+                </a>
+            </li>
+            <li class="side-nav-item">
+                <a href="{{ route('tasks.index') }}" class="side-nav-link">
+                    <span class="menu-icon"><i data-lucide="check-square"></i></span>
+                    <span class="menu-text">Görev ve Hatırlatmalar</span>
+                </a>
+            </li>
+            <li class="side-nav-item">
+                <a href="{{ route('reports.index') }}" class="side-nav-link">
                     <span class="menu-icon"><i data-lucide="bar-chart-3"></i></span>
                     <span class="menu-text">Raporlar</span>
                 </a>

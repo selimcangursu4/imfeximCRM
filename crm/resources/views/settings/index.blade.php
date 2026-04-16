@@ -32,7 +32,30 @@
                     </div>
                     <div class="card-body">
                         <p>Telegram Developer API (Telegram) ayarlarınızı buradan yapabilirsiniz.</p>
+                        <a href="{{ route('settings.telegram.index') }}" class="btn btn-primary w-100">Görüntüle</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Gmail API Ayarları</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Gmail API ayarlarınızı buradan yapabilirsiniz tüm mail işlemlerinizi panelden takip
+                            edebilirsiniz.</p>
                         <a href="" class="btn btn-primary w-100">Görüntüle</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Yapay Zeka API Ayarları</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>ChatGPT veya Gemini API'nizi yapılandırın. Bilgi bankasına göre otomatik mesaj yanıtlarını buradan yönetin.</p>
+                        <a href="{{ route('settings.ai.index') }}" class="btn btn-primary w-100">Görüntüle</a>
                     </div>
                 </div>
             </div>

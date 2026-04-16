@@ -6,10 +6,18 @@ use App\Models\Conversation;
 use App\Models\Customer;
 use App\Models\Message;
 use App\Services\MetaMessagingService;
+use App\Services\TelegramMessagingService;
 use Illuminate\Http\Request;
 
 class OmnichannelController extends Controller
 {
+    public function toggleAi(Request $request, Conversation $conversation)
+    {
+        $conversation->update([
+            'is_ai_active' => $request->boolean('is_ai_active')
+        ]);
+        return response()->json(['success' => true]);
+    }
     public function index(Request $request)
     {
         $selectedConversationId = $request->query('conversation');
@@ -94,7 +102,7 @@ class OmnichannelController extends Controller
         ]);
     }
 
-    public function storeMessage(Request $request, Conversation $conversation, MetaMessagingService $messagingService)
+    public function storeMessage(Request $request, Conversation $conversation, MetaMessagingService $messagingService, TelegramMessagingService $telegramService)
     {
         $request->validate([
             'body' => 'required|string|max:2000',
@@ -122,6 +130,12 @@ class OmnichannelController extends Controller
                 );
             } elseif ($conversation->channel->provider === 'instagram') {
                 $result = $messagingService->sendInstagramTextMessage(
+                    $conversation->company,
+                    $conversation->external_thread_id,
+                    $request->input('body')
+                );
+            } elseif ($conversation->channel->provider === 'telegram') {
+                $result = $telegramService->sendTextMessage(
                     $conversation->company,
                     $conversation->external_thread_id,
                     $request->input('body')

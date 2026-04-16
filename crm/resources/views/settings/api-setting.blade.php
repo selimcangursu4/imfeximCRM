@@ -131,6 +131,14 @@
                         </div>
                     </div>
 
+                    <hr>
+
+                    <div class="mb-2 text-end">
+                        <a href="{{ route('settings.ai.index') }}" class="btn btn-outline-primary">
+                            <i data-lucide="cpu" class="icon-sm me-1"></i> Yapay Zeka API Ayarları için tıklayın
+                        </a>
+                    </div>
+
                     <div class="d-flex justify-content-end">
                         <button type="submit" class="btn btn-primary">Kaydet</button>
                     </div>

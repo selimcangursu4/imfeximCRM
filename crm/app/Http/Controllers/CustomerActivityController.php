@@ -13,7 +13,12 @@ class CustomerActivityController extends Controller
         $request->validate([
             'type' => 'required|string|max:255',
             'description' => 'required|string',
+            'status' => 'nullable|string|max:255',
         ]);
+
+        if ($request->has('status') && $request->status) {
+            $customer->update(['status' => $request->status]);
+        }
 
         $activity = CustomerActivity::create([
             'customer_id' => $customer->id,

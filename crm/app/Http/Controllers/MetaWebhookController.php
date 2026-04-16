@@ -186,7 +186,6 @@ class MetaWebhookController extends Controller
             ->first();
 
         if ($customer) {
-            // Eğer mevcut isim "Instagram Kullanıcısı" ise ve yeni isim gerçek bir isimse güncelle
             if ($customer->name === 'Instagram Kullanıcısı' && $senderName !== 'Instagram Kullanıcısı') {
                 $customer->update(['name' => $senderName]);
             }
@@ -209,6 +208,7 @@ class MetaWebhookController extends Controller
                 'customer_id' => $customer->id,
                 'subject' => ucfirst($provider),
                 'status' => 'open',
+                'is_ai_active' => true,
             ]
         );
 
@@ -217,7 +217,7 @@ class MetaWebhookController extends Controller
             'updated_at' => now(),
         ]);
 
-        Message::create([
+        $incomingMsg = Message::create([
             'conversation_id' => $conversation->id,
             'company_id' => $company->id,
             'sender_type' => 'customer',
@@ -227,5 +227,41 @@ class MetaWebhookController extends Controller
             'payload' => $payload,
             'status' => 'received',
         ]);
+
+        // Send notifications to all users (in a real SaaS this should be filtered by company_id)
+        $users = \App\Models\User::all();
+        \Illuminate\Support\Facades\Notification::send($users, new \App\Notifications\IncomingMessageNotification($incomingMsg, $customer->name, $provider));
+
+        // AI Hook
+        if ($conversation->is_ai_active) {
+            $aiService = app(\App\Services\AiChatService::class);
+            $aiReply = $aiService->generateResponse($conversation, $body);
+
+            if ($aiReply) {
+                // OpenAI'den cevap geldi, bunu gönder
+                $messagingService = app(\App\Services\MetaMessagingService::class);
+                
+                try {
+                    if ($provider === 'whatsapp') {
+                        $messagingService->sendWhatsAppMessage($company, $senderId, $aiReply);
+                    } else {
+                        $messagingService->sendInstagramMessage($company, $senderId, $aiReply);
+                    }
+                    
+                    // DB'ye giden mesajı kaydet
+                    Message::create([
+                        'conversation_id' => $conversation->id,
+                        'company_id' => $company->id,
+                        'sender_type' => 'user',
+                        'sender_id' => null, // AI generated
+                        'direction' => 'outgoing',
+                        'body' => $aiReply,
+                        'status' => 'sent',
+                    ]);
+                } catch (\Exception $e) {
+                    \Log::error('[AI Auto-Reply] Mesaj Gönderilemedi', ['error' => $e->getMessage()]);
+                }
+            }
+        }
     }
 }

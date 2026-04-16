@@ -40,13 +40,23 @@
 
             <div class="col-xl-6 mb-3 mb-xl-0">
                 <div class="card h-100">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <div>
-                            <h5 class="card-title mb-1">{{ optional($conversation->customer)->name ?? 'Anonim Müşteri' }}</h5>
-                            <small class="text-muted">{{ optional($conversation->channel)->provider ?? 'Platform yok' }}</small>
+                        <div class="d-flex w-100 justify-content-between align-items-center">
+                            <div>
+                                <h5 class="card-title mb-1">{{ optional($conversation->customer)->name ?? 'Anonim Müşteri' }}</h5>
+                                <small class="text-muted">{{ optional($conversation->channel)->provider ?? 'Platform yok' }}</small>
+                            </div>
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="form-check form-switch mb-0">
+                                    <input class="form-check-input" type="checkbox" id="aiToggle" {{ $conversation->is_ai_active ? 'checked' : '' }} onchange="toggleAiStatus()">
+                                    <label class="form-check-label mb-0" for="aiToggle">
+                                        <span class="badge {{ $conversation->is_ai_active ? 'bg-primary' : 'bg-secondary' }}" id="aiStatusBadge">
+                                            {{ $conversation->is_ai_active ? 'AI Aktif' : 'AI Pasif (Manuel)' }}
+                                        </span>
+                                    </label>
+                                </div>
+                                <span class="badge bg-success">{{ ucfirst($conversation->status) }}</span>
+                            </div>
                         </div>
-                        <span class="badge bg-success">{{ ucfirst($conversation->status) }}</span>
-                    </div>
                     <div class="card-body d-flex flex-column p-3">
                         <div class="chat-messages flex-grow-1 overflow-auto mb-3" style="max-height: 64vh;">
                             @forelse($conversation->messages as $message)
@@ -114,4 +124,29 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+<script>
+function toggleAiStatus() {
+    let isActive = document.getElementById('aiToggle').checked ? 1 : 0;
+    
+    $.ajax({
+        url: '{{ route("omnichannel.toggle-ai", $conversation) }}',
+        method: 'POST',
+        data: {
+            _token: '{{ csrf_token() }}',
+            is_ai_active: isActive
+        },
+        success: function(response) {
+            let badge = $('#aiStatusBadge');
+            if(isActive) {
+                badge.removeClass('bg-secondary').addClass('bg-primary').text('AI Aktif');
+            } else {
+                badge.removeClass('bg-primary').addClass('bg-secondary').text('AI Pasif (Manuel)');
+            }
+        }
+    });
+}
+</script>
 @endsection

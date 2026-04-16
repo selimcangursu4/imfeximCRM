@@ -26,7 +26,6 @@
                                 <input data-chat-search type="text" class="form-control bg-light-subtle border-light" placeholder="Mesaj Ara...">
                                 <i data-lucide="search" class="app-search-icon text-muted"></i>
                             </div>
-                            <a href="#!" class="btn btn-dark btn-icon" data-bs-toggle="modal" data-bs-target="#createSingleChatModal"><i class="ti ti-pencil-plus fs-xl"></i></a>
                         </div>
                     </div>
                     <div id="chat-sidebar" class="card-body p-2" style="height: calc(100% - 100px);" data-simplebar>
@@ -88,6 +87,9 @@
                                         } elseif (optional($selectedConversation->channel)->provider === 'instagram') {
                                             $msgProviderColor = '#E1306C';
                                             $msgTextColor = '#fff';
+                                        } elseif (optional($selectedConversation->channel)->provider === 'telegram') {
+                                            $msgProviderColor = '#0088cc';
+                                            $msgTextColor = '#fff';
                                         }
                                     @endphp
                                     <span class="avatar avatar-sm flex-shrink-0">
@@ -97,7 +99,7 @@
                                     </span>
                                 @endif
                                 <div>
-                                    <div class="chat-message py-2 px-3 {{ $message->direction === 'outgoing' ? 'bg-info-subtle text-dark' : 'bg-warning-subtle' }} rounded">
+                                    <div class="chat-message py-2 px-3 {{ $message->direction === 'outgoing' ? 'bg-info-subtle text-dark' : (optional($selectedConversation->channel)->provider === 'telegram' ? 'bg-primary-subtle text-dark border border-primary-subtle' : 'bg-warning-subtle') }} rounded">
                                         {{ $message->body }}
                                     </div>
                                     <div class="text-muted fs-xs mt-1"><i class="ti ti-clock"></i> {{ $message->created_at->format('h:i a') }}</div>
@@ -176,37 +178,7 @@
             </div> <!-- end card-->
         </div> <!-- end outlook-box-->
 
-        <div class="modal fade" id="createSingleChatModal" tabindex="-1" aria-labelledby="createSingleChatModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="createSingleChatModalLabel">Start New Chat</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-
-                    <form id="createSingleChatForm">
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                <label for="recipientUser" class="form-label">Recipient</label>
-                                <input type="text" class="form-control" id="recipientUser" placeholder="Enter username or email" required>
-                            </div>
-
-                            <div class="mb-0">
-                                <label for="initialMessage" class="form-label">Message</label>
-                                <textarea class="form-control" id="initialMessage" rows="3" placeholder="Type your message here..." required></textarea>
-                            </div>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Send Message</button>
-                        </div>
-                    </form>
-
-                </div>
-            </div>
-        </div>
+      
 
         <div class="modal fade" id="videoCallModal" tabindex="-1" aria-labelledby="videoCallModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-xl">

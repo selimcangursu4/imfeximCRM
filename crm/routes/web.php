@@ -11,8 +11,13 @@ use App\Http\Controllers\OmnichannelController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\QuickReplyController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\TelegramSettingController;
+use App\Http\Controllers\TelegramWebhookController;
+use App\Http\Controllers\SalesFunnelController;
+use App\Http\Controllers\CustomerActivityController;
 
 Route::match(['get', 'post'], '/webhooks/meta', [MetaWebhookController::class, 'handle'])->name('webhooks.meta');
+Route::post('/webhooks/telegram/{token}', [TelegramWebhookController::class, 'handle'])->name('webhooks.telegram');
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -20,6 +25,13 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'index'])->name('profile.index');
+    Route::put('/profile/update', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile/password', [\App\Http\Controllers\ProfileController::class, 'updatePassword'])->name('profile.password');
+
+    Route::resource('tasks', \App\Http\Controllers\TaskController::class);
+    Route::resource('knowledge-bases', \App\Http\Controllers\KnowledgeBaseController::class);
+
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
@@ -39,6 +51,23 @@ Route::middleware('auth')->group(function () {
     Route::get('/omnichannel/{conversation}', [OmnichannelController::class, 'show'])->name('omnichannel.show');
     Route::get('/omnichannel/{conversation}/messages', [OmnichannelController::class, 'syncMessages'])->name('omnichannel.messages.sync');
     Route::post('/omnichannel/{conversation}/message', [OmnichannelController::class, 'storeMessage'])->name('omnichannel.message.store');
+    Route::post('/omnichannel/{conversation}/toggle-ai', [OmnichannelController::class, 'toggleAi'])->name('omnichannel.toggle-ai');
+
+    // Satış Hunisi
+    Route::get('/sales-funnel', [SalesFunnelController::class, 'index'])->name('sales-funnel.index');
+
+    // Raporlar (Reports Modülü)
+    Route::group(['prefix' => 'reports', 'as' => 'reports.'], function () {
+        Route::get('/', [\App\Http\Controllers\ReportController::class, 'index'])->name('index');
+        Route::get('/sales', [\App\Http\Controllers\ReportController::class, 'sales'])->name('sales');
+        Route::get('/funnel', [\App\Http\Controllers\ReportController::class, 'funnel'])->name('funnel');
+        Route::get('/leads', [\App\Http\Controllers\ReportController::class, 'leads'])->name('leads');
+        Route::get('/activities', [\App\Http\Controllers\ReportController::class, 'activities'])->name('activities');
+        Route::get('/time', [\App\Http\Controllers\ReportController::class, 'time'])->name('time');
+        Route::get('/revenue', [\App\Http\Controllers\ReportController::class, 'revenue'])->name('revenue');
+        Route::get('/marketing', [\App\Http\Controllers\ReportController::class, 'marketing'])->name('marketing');
+        Route::get('/ai-insights', [\App\Http\Controllers\ReportController::class, 'aiInsights'])->name('ai');
+    });
 
     // Hazır Mesaj Ayarları
     Route::get('/settings/quick-replies', [QuickReplyController::class, 'index'])->name('settings.quick-replies.index');
@@ -57,4 +86,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::get('/settings/api', [ApiSettingController::class, 'index'])->name('settings.api.index');
     Route::post('/settings/api', [ApiSettingController::class, 'store'])->name('settings.api.store');
+
+    // Yapay Zeka Ayarları (Ayrı Sayfa)
+    Route::get('/settings/ai', [\App\Http\Controllers\AiSettingController::class, 'index'])->name('settings.ai.index');
+    Route::post('/settings/ai', [\App\Http\Controllers\AiSettingController::class, 'store'])->name('settings.ai.store');
+
+    // Telegram API Ayarları
+    Route::get('/settings/telegram', [TelegramSettingController::class, 'index'])->name('settings.telegram.index');
+    Route::post('/settings/telegram', [TelegramSettingController::class, 'store'])->name('settings.telegram.store');
 });

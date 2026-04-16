@@ -10,6 +10,8 @@
     <script src="{{asset('assets/js/config.js')}}"></script>
     <link href="{{asset('assets/css/vendors.min.css')}}" rel="stylesheet" type="text/css">
     <link href="{{asset('assets/css/app.min.css')}}" rel="stylesheet" type="text/css">
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -23,11 +25,17 @@
         </div>
     </div>
 
+    <!-- Explicitly load jQuery to prevent reference errors -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script src="{{asset('assets/js/vendors.min.js')}}"></script>
     <script src="{{asset('assets/js/app.js')}}"></script>
     <script src="{{asset('assets/plugins/chartjs/chart.umd.js')}}"></script>
     <script src="{{asset('assets/js/pages/custom-table.js')}}"></script>
     <script src="{{asset('assets/js/pages/dashboard.js')}}"></script>
+
+    @yield('scripts')
 </body>
 
 </html>

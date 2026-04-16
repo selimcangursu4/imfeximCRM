@@ -33,20 +33,75 @@
                                 </span>
                             </div>
                             <div>
-                                <h5 class="mb-0" data-field="name">{{ $customer->name }}</h5>
-                                <p class="text-muted mb-0 fs-xs" data-field="company">{{ $customer->company ?? 'Bireysel' }}</p>
+                                <h5 class="mb-0 d-flex align-items-center gap-2">
+                                    <span data-field="name">{{ $customer->name }}</span>
+                                    @php
+                                        $statusClass = 'bg-secondary';
+                                        if ($customer->status === \App\Models\Customer::STATUS_WON)
+                                            $statusClass = 'bg-success';
+                                        elseif ($customer->status === \App\Models\Customer::STATUS_LOST)
+                                            $statusClass = 'bg-danger';
+                                        elseif ($customer->status === \App\Models\Customer::STATUS_LEAD)
+                                            $statusClass = 'bg-primary';
+                                        elseif ($customer->status === \App\Models\Customer::STATUS_CONTACTED)
+                                            $statusClass = 'bg-info';
+                                        elseif ($customer->status === \App\Models\Customer::STATUS_QUALIFIED)
+                                            $statusClass = 'bg-warning text-dark';
+                                    @endphp
+                                    <span
+                                        class="badge {{ $statusClass }} fs-xxs fw-bold text-uppercase funnel-status-badge">{{ $customer->status ?? 'Lead' }}</span>
+                                </h5>
+                                <p class="text-muted mb-0 fs-xs" data-field="company">{{ $customer->company ?? 'Bireysel' }}
+                                </p>
                             </div>
                         </div>
-                        
+
                         <div class="pt-2">
                             <h6 class="text-uppercase fs-xxs fw-bold text-muted mb-3 ls-wider">İletişim Bilgileri</h6>
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-light rounded p-2 me-3">
+                                    <i class="ti ti-hash fs-lg text-primary"></i>
+                                </div>
+                                <div>
+                                    <p class="text-muted mb-0 fs-xs">Müşteri Numarası</p>
+                                    <h6 class="mb-0 fs-sm">#{{ $customer->id }}</h6>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-light rounded p-2 me-3">
+                                    <i class="ti ti-world fs-lg text-primary"></i>
+                                </div>
+                                <div>
+                                    <p class="text-muted mb-0 fs-xs">Veri Kaynağı</p>
+                                    <div class="d-flex gap-1 mt-1">
+                                        @php
+                                            $providers = $customer->conversations->pluck('channel.provider')->unique();
+                                        @endphp
+                                        @forelse($providers as $provider)
+                                            @php
+                                                $badgeClass = 'bg-secondary-subtle text-secondary';
+                                                if ($provider === 'whatsapp')
+                                                    $badgeClass = 'bg-success-subtle text-success';
+                                                elseif ($provider === 'instagram')
+                                                    $badgeClass = 'bg-danger-subtle text-danger';
+                                                elseif ($provider === 'telegram')
+                                                    $badgeClass = 'bg-info-subtle text-info';
+                                            @endphp
+                                            <span class="badge {{ $badgeClass }} fs-xxs text-uppercase">{{ $provider }}</span>
+                                        @empty
+                                            <h6 class="mb-0 fs-sm">-</h6>
+                                        @endforelse
+                                    </div>
+                                </div>
+                            </div>
                             <div class="d-flex align-items-center mb-3">
                                 <div class="bg-light rounded p-2 me-3">
                                     <i class="ti ti-mail fs-lg text-primary"></i>
                                 </div>
                                 <div class="overflow-hidden">
                                     <p class="text-muted mb-0 fs-xs">E-posta</p>
-                                    <h6 class="mb-0 fs-sm text-truncate" data-field="email">{{ $customer->email ?? '-' }}</h6>
+                                    <h6 class="mb-0 fs-sm text-truncate" data-field="email">{{ $customer->email ?? '-' }}
+                                    </h6>
                                 </div>
                             </div>
                             <div class="d-flex align-items-center mb-3">
@@ -70,7 +125,9 @@
                         </div>
 
                         <div class="pt-2 border-top mt-3">
-                            <p class="text-muted mb-0 fs-xs">Sistem Kayıt Tarihi: <strong>{{ $customer->created_at->format('d.m.Y H:i') }}</strong></p>
+                            <p class="text-muted mb-0 fs-xs">Sistem Kayıt Tarihi:
+                                <strong>{{ $customer->created_at->format('d.m.Y H:i') }}</strong>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -117,7 +174,7 @@
                         <form id="activityForm" class="mb-4 bg-light p-3 rounded">
                             @csrf
                             <div class="row g-3">
-                                <div class="col-md-3">
+                                <div class="col-md-6">
                                     <label class="form-label fs-xs fw-bold">Tip</label>
                                     <select name="type" class="form-select form-select-sm" required>
                                         <option value="Telefon Görüşmesi">Telefon Görüşmesi</option>
@@ -127,12 +184,24 @@
                                         <option value="Ziyaret">Ziyaret</option>
                                     </select>
                                 </div>
-                                <div class="col-md-7">
-                                    <label class="form-label fs-xs fw-bold">Açıklama</label>
-                                    <input type="text" name="description" class="form-control form-control-sm" placeholder="Aktivite detayı yazın..." required>
+                                <div class="col-md-6">
+                                    <label class="form-label fs-xs fw-bold">Huni Durumu (Güncelle)</label>
+                                    <select name="status" class="form-select form-select-sm">
+                                        <option value="">Değiştirme ({{ $customer->status }})</option>
+                                        @foreach(\App\Models\Customer::getStatuses() as $status)
+                                            <option value="{{ $status }}" {{ $customer->status == $status ? 'selected' : '' }}>
+                                                {{ $status }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
-                                <div class="col-md-2 d-flex align-items-end">
-                                    <button type="submit" class="btn btn-primary btn-sm w-100">Ekle</button>
+                                <div class="col-md-12">
+                                    <label class="form-label fs-xs fw-bold">Açıklama</label>
+                                    <textarea type="text" name="description" rows="7" class="form-control form-control-sm"
+                                        placeholder="Aktivite detayı yazın..." required></textarea>
+                                </div>
+                                <div class="col-md-12 d-flex align-items-end">
+                                    <button type="submit" class="btn btn-primary btn-sm w-100">Aktivite Ekle</button>
                                 </div>
                             </div>
                         </form>
@@ -152,18 +221,21 @@
                                     @forelse($customer->activities->sortByDesc('created_at') as $activity)
                                         <tr data-activity-id="{{ $activity->id }}">
                                             <td class="fs-xs">{{ $activity->created_at->format('d.m.Y H:i') }}</td>
-                                            <td><span class="badge bg-info-subtle text-info fs-xxs">{{ $activity->type }}</span></td>
+                                            <td><span class="badge bg-info-subtle text-info fs-xxs">{{ $activity->type }}</span>
+                                            </td>
                                             <td class="fs-sm">{{ $activity->description }}</td>
                                             <td class="fs-xs">{{ optional($activity->user)->name ?? 'Sistem' }}</td>
                                             <td class="text-end">
-                                                <button class="btn btn-link link-danger p-0 delete-activity" data-id="{{ $activity->id }}">
+                                                <button class="btn btn-link link-danger p-0 delete-activity"
+                                                    data-id="{{ $activity->id }}">
                                                     <i class="ti ti-trash"></i>
                                                 </button>
                                             </td>
                                         </tr>
                                     @empty
                                         <tr class="empty-row">
-                                            <td colspan="5" class="text-center py-4 text-muted">Henüz bir aktivite kaydı bulunmuyor.</td>
+                                            <td colspan="5" class="text-center py-4 text-muted">Henüz bir aktivite kaydı
+                                                bulunmuyor.</td>
                                         </tr>
                                     @endforelse
                                 </tbody>
@@ -218,11 +290,11 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             const customerId = {{ $customer->id }};
 
             // Müşteri Güncelleme (AJAX)
-            $('#ajaxCustomerUpdateForm').on('submit', function(e) {
+            $('#ajaxCustomerUpdateForm').on('submit', function (e) {
                 e.preventDefault();
                 const btn = $(this).find('button[type="submit"]');
                 const originalText = btn.text();
@@ -232,11 +304,17 @@
                     url: `/customers/${customerId}/ajax-update`,
                     method: 'POST',
                     data: $(this).serialize(),
-                    success: function(response) {
+                    success: function (response) {
                         if (response.success) {
-                            alert(response.message);
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Başarılı',
+                                text: response.message,
+                                timer: 1500,
+                                showConfirmButton: false
+                            });
                             $('#customerEditModal').modal('hide');
-                            
+
                             // Sayfadaki alanları güncelle
                             $('[data-field="name"]').text(response.customer.name);
                             $('[data-field="email"]').text(response.customer.email || '-');
@@ -245,17 +323,22 @@
                             $('[data-field="address"]').text(response.customer.address || '-');
                         }
                     },
-                    error: function() {
-                        alert('Güncelleme sırasında bir hata oluştu.');
+                    error: function (xhr) {
+                        const msg = xhr.responseJSON ? xhr.responseJSON.message : 'Güncelleme sırasında bir hata oluştu.';
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Hata',
+                            text: msg
+                        });
                     },
-                    complete: function() {
+                    complete: function () {
                         btn.prop('disabled', false).text(originalText);
                     }
                 });
             });
 
             // Aktivite Ekleme (AJAX)
-            $('#activityForm').on('submit', function(e) {
+            $('#activityForm').on('submit', function (e) {
                 e.preventDefault();
                 const btn = $(this).find('button[type="submit"]');
                 btn.prop('disabled', true);
@@ -264,56 +347,97 @@
                     url: `/customers/${customerId}/activities`,
                     method: 'POST',
                     data: $(this).serialize(),
-                    success: function(response) {
+                    success: function (response) {
                         if (response.success) {
+                            // Değerleri resetten önce al
+                            const newStatus = $('#activityForm select[name="status"]').val();
+
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Başarılı',
+                                text: response.message,
+                                timer: 1500,
+                                showConfirmButton: false
+                            });
+
                             $('.empty-row').remove();
                             const a = response.activity;
                             const html = `
-                                <tr data-activity-id="${a.id}">
-                                    <td class="fs-xs">${a.created_at}</td>
-                                    <td><span class="badge bg-info-subtle text-info fs-xxs">${a.type}</span></td>
-                                    <td class="fs-sm">${a.description}</td>
-                                    <td class="fs-xs">${a.user_name}</td>
-                                    <td class="text-end">
-                                        <button class="btn btn-link link-danger p-0 delete-activity" data-id="${a.id}">
-                                            <i class="ti ti-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            `;
+                                                    <tr data-activity-id="${a.id}">
+                                                        <td class="fs-xs">${a.created_at}</td>
+                                                        <td><span class="badge bg-info-subtle text-info fs-xxs">${a.type}</span></td>
+                                                        <td class="fs-sm">${a.description}</td>
+                                                        <td class="fs-xs">${a.user_name}</td>
+                                                        <td class="text-end">
+                                                            <button class="btn btn-link link-danger p-0 delete-activity" data-id="${a.id}">
+                                                                <i class="ti ti-trash"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                `;
                             $('#activitiesTable tbody').prepend(html);
                             $('#activityForm')[0].reset();
+
+                            // Durum güncellenmişse sayfayı yenile (renk değişimleri için)
+                            if (newStatus) {
+                                setTimeout(() => {
+                                    location.reload();
+                                }, 1000);
+                            }
                         }
                     },
-                    error: function() {
-                        alert('Aktivite eklenirken bir hata oluştu.');
+                    error: function (xhr) {
+                        const msg = xhr.responseJSON ? xhr.responseJSON.message : 'Aktivite eklenirken bir hata oluştu.';
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Hata',
+                            text: msg
+                        });
                     },
-                    complete: function() {
+                    complete: function () {
                         btn.prop('disabled', false);
                     }
                 });
             });
 
             // Aktivite Silme (AJAX)
-            $(document).on('click', '.delete-activity', function() {
-                if (!confirm('Bu aktiviteyi silmek istediğinize emin misiniz?')) return;
-                
+            $(document).on('click', '.delete-activity', function () {
                 const id = $(this).data('id');
                 const row = $(`tr[data-activity-id="${id}"]`);
 
-                $.ajax({
-                    url: `/activities/${id}`,
-                    method: 'DELETE',
-                    data: { _token: '{{ csrf_token() }}' },
-                    success: function(response) {
-                        if (response.success) {
-                            row.fadeOut(function() {
-                                $(this).remove();
-                                if ($('#activitiesTable tbody tr').length === 0) {
-                                    $('#activitiesTable tbody').append('<tr class="empty-row"><td colspan="5" class="text-center py-4 text-muted">Henüz bir aktivite kaydı bulunmuyor.</td></tr>');
+                Swal.fire({
+                    title: 'Emin misiniz?',
+                    text: "Bu aktivite kaydı kalıcı olarak silinecektir!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Evet, sil!',
+                    cancelButtonText: 'Vazgeç'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: `/activities/${id}`,
+                            method: 'DELETE',
+                            data: { _token: '{{ csrf_token() }}' },
+                            success: function (response) {
+                                if (response.success) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Silindi!',
+                                        text: response.message,
+                                        timer: 1500,
+                                        showConfirmButton: false
+                                    });
+                                    row.fadeOut(function () {
+                                        $(this).remove();
+                                        if ($('#activitiesTable tbody tr').length === 0) {
+                                            $('#activitiesTable tbody').append('<tr class="empty-row"><td colspan="5" class="text-center py-4 text-muted">Henüz bir aktivite kaydı bulunmuyor.</td></tr>');
+                                        }
+                                    });
                                 }
-                            });
-                        }
+                            }
+                        });
                     }
                 });
             });

@@ -37,7 +37,9 @@
                         data-bs-offset="0,24" type="button" data-bs-auto-close="outside" aria-haspopup="false"
                         aria-expanded="false">
                         <i data-lucide="bell" class="fs-xxl"></i>
-                        <span class="badge text-bg-danger badge-circle topbar-badge">5</span>
+                        @if(auth()->user() && auth()->user()->unreadNotifications->count() > 0)
+                            <span class="badge text-bg-danger badge-circle topbar-badge">{{ auth()->user()->unreadNotifications->count() }}</span>
+                        @endif
                     </button>
 
                     <div class="dropdown-menu p-0 dropdown-menu-end dropdown-menu-lg">
@@ -47,39 +49,47 @@
                                     <h6 class="m-0 fs-md fw-semibold">Bildirimler</h6>
                                 </div>
                                 <div class="col text-end">
-                                    <a href="#!" class="badge badge-soft-success badge-label py-1">07 Yeni Bildirim</a>
+                                    <a href="#!" class="badge badge-soft-success badge-label py-1">{{ auth()->user() ? auth()->user()->unreadNotifications->count() : 0 }} Yeni Mesaj</a>
                                 </div>
                             </div>
                         </div>
 
                         <div style="max-height: 300px;" data-simplebar>
-                            <!-- Notification 1 -->
-                            <div class="dropdown-item notification-item py-2 text-wrap" id="message-1">
-                                <span class="d-flex align-items-center gap-3">
-                                    <span class="flex-shrink-0 position-relative">
-                                        <img src="assets/images/users/user-4.jpg" class="avatar-md rounded-circle"
-                                            alt="User Avatar">
-                                        <span class="position-absolute rounded-pill bg-success notification-badge">
-                                            <i class="ti ti-bell align-middle"></i>
-                                            <span class="visually-hidden">unread notification</span>
+                            @if(auth()->user())
+                                @forelse(auth()->user()->notifications->take(10) as $notification)
+                                    <a href="{{ $notification->data['url'] ?? '#' }}" class="dropdown-item notification-item py-2 text-wrap {{ $notification->read_at ? 'bg-light' : '' }}">
+                                        <span class="d-flex align-items-center gap-3">
+                                            <span class="flex-shrink-0 position-relative">
+                                                @php
+                                                    $p = $notification->data['provider'] ?? 'chat';
+                                                    $i = 'ti-message'; $c = 'primary';
+                                                    if($p == 'whatsapp') { $i = 'ti-brand-whatsapp'; $c = 'success'; }
+                                                    if($p == 'instagram') { $i = 'ti-brand-instagram'; $c = 'danger'; }
+                                                    if($p == 'telegram') { $i = 'ti-brand-telegram'; $c = 'info'; }
+                                                @endphp
+                                                <div class="avatar-sm flex-shrink-0">
+                                                    <span class="avatar-title bg-{{ $c }}-subtle text-{{ $c }} rounded-circle">
+                                                        <i class="ti {{ $i }}"></i>
+                                                    </span>
+                                                </div>
+                                                @if(!$notification->read_at)
+                                                <span class="position-absolute end-0 top-0 rounded-circle bg-danger p-1">
+                                                    <span class="visually-hidden">unread notification</span>
+                                                </span>
+                                                @endif
+                                            </span>
+                                            <span class="flex-grow-1 text-muted">
+                                                <span class="fw-medium text-body">{{ $notification->data['customer_name'] ?? 'Müşteri' }}</span><br>
+                                                <span class="fs-xs">{{ Str::limit($notification->data['body'] ?? '', 40) }}</span><br>
+                                                <span class="fs-xs">{{ $notification->created_at->diffForHumans() }}</span>
+                                            </span>
                                         </span>
-                                    </span>
-                                    <span class="flex-grow-1 text-muted">
-                                        <span class="fw-medium text-body">Emily Johnson</span> commented on a task in
-                                        <span class="fw-medium text-body">Design Sprint</span><br>
-                                        <span class="fs-xs">12 minutes ago</span>
-                                    </span>
-                                    <button type="button"
-                                        class="flex-shrink-0 text-muted btn btn-link p-0 position-absolute end-0 me-2 d-none noti-close-btn"
-                                        data-dismissible="#message-1">
-                                        <i class="ti ti-xbox-x-filled fs-xxl"></i>
-                                    </button>
-                                </span>
-                            </div>
-
-
-
-
+                                    </a>
+                                    @php $notification->markAsRead(); @endphp
+                                @empty
+                                    <div class="p-3 text-center text-muted">Açıklanacak bildirim yok.</div>
+                                @endforelse
+                            @endif
                         </div>
 
 
@@ -119,7 +129,7 @@
                         <img src="assets/images/users/user-3.jpg" width="32" class="rounded-circle me-lg-2 d-flex"
                             alt="user-image">
                         <div class="d-lg-flex align-items-center gap-1 d-none">
-                            <h5 class="my-0">Geneva</h5>
+                            <h5 class="my-0">{{ auth()->user()->name ?? 'Kullanıcı' }}</h5>
                             <i class="ti ti-chevron-down align-middle"></i>
                         </div>
                     </a>
@@ -130,7 +140,7 @@
                         </div>
 
                         <!-- My Profile -->
-                        <a href="users-profile.html" class="dropdown-item">
+                        <a href="{{ route('profile.index') }}" class="dropdown-item">
                             <i class="ti ti-user-circle me-1 fs-17 align-middle"></i>
                             <span class="align-middle">Profilim</span>
                         </a>

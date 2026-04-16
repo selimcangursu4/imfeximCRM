@@ -16,6 +16,11 @@ class Conversation extends Model
         'external_thread_id',
         'subject',
         'status',
+        'is_ai_active',
+    ];
+
+    protected $casts = [
+        'is_ai_active' => 'boolean',
     ];
 
     public function company()

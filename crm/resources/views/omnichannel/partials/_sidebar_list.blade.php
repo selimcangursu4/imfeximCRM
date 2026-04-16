@@ -8,6 +8,7 @@
                     $providerColor = 'var(--bs-primary)';
                     if (optional($item->channel)->provider === 'whatsapp') $providerColor = '#25D366';
                     elseif (optional($item->channel)->provider === 'instagram') $providerColor = '#E1306C';
+                    elseif (optional($item->channel)->provider === 'telegram') $providerColor = '#0088cc';
                 @endphp
                 <span class="avatar-title text-white rounded-circle" style="background-color: {{ $providerColor }} !important;">
                     {{ strtoupper(substr(optional($item->customer)->name ?? 'U', 0, 1)) }}

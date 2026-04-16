@@ -3,59 +3,20 @@
     <div class="container-fluid">
         <div class="page-title-head d-flex align-items-center">
             <div class="flex-grow-1">
-                <h4 class="fs-xl fw-bold m-0">Dashboard</h4>
+                <h4 class="fs-xl fw-bold m-0">Kontrol Paneli</h4>
             </div>
 
             <div class="text-end">
                 <ol class="breadcrumb m-0 py-0">
-                    <li class="breadcrumb-item"><a href="javascript: void(0);">UBold</a></li>
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">İMFEXİM CRM</a></li>
 
-                    <li class="breadcrumb-item active">Dashboard</li>
+                    <li class="breadcrumb-item active">Kontrol Paneli</li>
                 </ol>
             </div>
         </div>
 
-
         <div class="row row-cols-xxl-4 row-cols-md-2 row-cols-1">
-            <!-- Total Sales Widget -->
-            <div class="col">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="avatar fs-60 avatar-img-size flex-shrink-0">
-                                <span class="avatar-title bg-primary-subtle text-primary rounded-circle fs-24">
-                                    <i class="ti ti-credit-card"></i>
-                                </span>
-                            </div>
-                            <div class="text-end">
-                                <h3 class="mb-2 fw-normal">$<span data-target="124.7">0</span>K</h3>
-                                <p class="mb-0 text-muted"><span>Total Sales</span></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div><!-- end col -->
-
-            <!-- Orders Placed Widget -->
-            <div class="col">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="avatar fs-60 avatar-img-size flex-shrink-0">
-                                <span class="avatar-title bg-success-subtle text-success rounded-circle fs-24">
-                                    <i class="ti ti-shopping-cart"></i>
-                                </span>
-                            </div>
-                            <div class="text-end">
-                                <h3 class="mb-2 fw-normal"><span data-target="2358">0</span></h3>
-                                <p class="mb-0 text-muted"><span>Orders Placed</span></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div><!-- end col -->
-
-            <!-- Active Customers Widget -->
+            <!-- Total Customers Widget -->
             <div class="col">
                 <div class="card">
                     <div class="card-body">
@@ -66,1075 +27,359 @@
                                 </span>
                             </div>
                             <div class="text-end">
-                                <h3 class="mb-2 fw-normal"><span data-target="839">0</span></h3>
-                                <p class="mb-0 text-muted"><span>Active Customers</span></p>
+                                <h3 class="mb-2 fw-normal">{{ number_format($totalCustomers) }}</h3>
+                                <p class="mb-0 text-muted"><span>Toplam Müşteri</span></p>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div><!-- end col -->
+            </div>
 
-            <!-- Refund Requests Widget -->
+            <!-- Active Deals Widget -->
             <div class="col">
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="avatar fs-60 avatar-img-size flex-shrink-0">
                                 <span class="avatar-title bg-warning-subtle text-warning rounded-circle fs-24">
-                                    <i class="ti ti-rotate-clockwise-2"></i>
+                                    <i class="ti ti-target"></i>
                                 </span>
                             </div>
                             <div class="text-end">
-                                <h3 class="mb-2 fw-normal"><span data-target="41">0</span></h3>
-                                <p class="mb-0 text-muted"><span>Refund Requests</span></p>
+                                <h3 class="mb-2 fw-normal">{{ number_format($activeDealsCount) }}</h3>
+                                <p class="mb-0 text-muted"><span>Aktif Fırsatlar</span></p>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div><!-- end col -->
-        </div><!-- end row -->
+            </div>
+
+            <!-- Today's Sales -->
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="avatar fs-60 avatar-img-size flex-shrink-0">
+                                <span class="avatar-title bg-success-subtle text-success rounded-circle fs-24">
+                                    <i class="ti ti-currency-dollar"></i>
+                                </span>
+                            </div>
+                            <div class="text-end">
+                                <h3 class="mb-2 fw-normal">₺{{ number_format($todaySales, 2) }}</h3>
+                                <p class="mb-0 text-muted"><span>Bugünkü Satış</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monthly Sales -->
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="avatar fs-60 avatar-img-size flex-shrink-0">
+                                <span class="avatar-title bg-primary-subtle text-primary rounded-circle fs-24">
+                                    <i class="ti ti-chart-bar"></i>
+                                </span>
+                            </div>
+                            <div class="text-end">
+                                <h3 class="mb-2 fw-normal">₺{{ number_format($monthlySales, 2) }}</h3>
+                                <p class="mb-0 text-muted"><span>Aylık Ciro</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-body p-0">
                         <div class="row g-0">
-                            <div class="col-xxl-3 col-xl-6 order-xl-1 order-xxl-0">
-                                <div class="p-3 border-end border-dashed">
-                                    <h4 class="card-title mb-0">Total Sales</h4>
+                            <!-- Funnel Grafiği -->
+                            <div class="col-xxl-4 col-xl-5 order-xl-1 order-xxl-0">
+                                <div class="p-4 border-end border-dashed h-100">
+                                    <h4 class="card-title mb-0">Huni Dağılımı</h4>
                                     <p class="text-muted fs-xs">
-                                        You have 21 pending orders awaiting fulfillment.
+                                        Fırsatların aşamalara göre dağılımı. Açılış oranı: %{{ $conversionRate }}
                                     </p>
-
                                     <div class="row mt-4">
                                         <div class="col-lg-12">
                                             <div style="height: 300px;">
-                                                <canvas id="multi-pie-chart"></canvas>
+                                                <canvas id="crm-funnel-chart"></canvas>
                                             </div>
                                         </div>
                                     </div>
-                                </div> <!-- end .p-4-->
-                                <hr class="d-xxl-none border-light m-0">
-                            </div> <!-- end col-->
-                            <div class="col-xxl-9 order-xl-3 order-xxl-1">
-                                <div class="px-4 py-3">
+                                </div>
+                            </div>
+                            
+                            <!-- Satış Grafiği -->
+                            <div class="col-xxl-8 col-xl-7 order-xl-3 order-xxl-1">
+                                <div class="px-4 py-4">
                                     <div class="d-flex justify-content-between mb-3">
-                                        <h4 class="card-title">Sales Analytics</h4>
-                                        <a href="#!"
-                                            class="link-reset text-decoration-underline fw-semibold link-offset-3">View
-                                            Reports <i class="ti ti-arrow-right"></i></a>
+                                        <h4 class="card-title">Son 7 Gün Satış Eğilimi</h4>
                                     </div>
-
                                     <div dir="ltr">
                                         <div class="mt-3" style="height: 330px;">
-                                            <canvas id="sales-analytics-chart"></canvas>
+                                            <canvas id="crm-sales-chart"></canvas>
                                         </div>
                                     </div>
-                                </div> <!-- end .px-4-->
-                            </div> <!-- end col-->
-
-                        </div> <!-- end row-->
-                    </div> <!-- end card-body-->
-                </div> <!-- end card-->
-            </div> <!-- end col-->
-        </div> <!-- end row-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="row">
-            <div class="col-xxl-6">
-                <div data-table data-table-rows-per-page="7" class="card">
-                    <div class="card-header justify-content-between align-items-center border-dashed">
-                        <h4 class="card-title mb-0">Product Inventory</h4>
-                        <div class="d-flex gap-2">
-                            <a href="ecommerce-add-product.html" class="btn btn-sm btn-soft-secondary">
-                                <i class="ti ti-plus me-1"></i> Add Product
-                            </a>
-                            <a href="javascript:void(0);" class="btn btn-sm btn-primary">
-                                <i class="ti ti-file-export me-1"></i> Export CSV
-                            </a>
+            <!-- Görevler ve Hatırlatmalar -->
+            <div class="col-xxl-4">
+                <div class="card h-100">
+                    <div class="card-header border-dashed">
+                        <h4 class="card-title mb-0">Görevler & Hatırlatmalar</h4>
+                    </div>
+                    <div class="card-body p-0" style="max-height: 400px; overflow-y:auto;">
+                        <div class="p-3">
+                            @if($overdueTasks->count() > 0)
+                                <h6 class="fs-xs text-danger text-uppercase mb-2">Gecikmiş ({{ $overdueTasks->count() }})</h6>
+                                @foreach($overdueTasks as $task)
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="avatar-sm flex-shrink-0 me-3">
+                                            <span class="avatar-title bg-danger-subtle text-danger rounded-circle">
+                                                <i class="ti ti-alert-circle"></i>
+                                            </span>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h6 class="fs-sm mb-1">{{ $task->title }}</h6>
+                                            <p class="fs-xs text-muted mb-0">{{ optional($task->customer)->name ?? 'Müşteri Yok' }} - {{ $task->due_date->format('d.m.Y H:i') }}</p>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @endif
+
+                            <h6 class="fs-xs text-primary text-uppercase mb-2 mt-4">Bugün ({{ $todayTasks->count() }})</h6>
+                            @forelse($todayTasks as $task)
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="avatar-sm flex-shrink-0 me-3">
+                                        <span class="avatar-title bg-primary-subtle text-primary rounded-circle">
+                                            <i class="ti ti-calendar-event"></i>
+                                        </span>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="fs-sm mb-1">{{ $task->title }}</h6>
+                                        <p class="fs-xs text-muted mb-0">{{ optional($task->customer)->name ?? 'Müşteri Yok' }} - {{ $task->due_date->format('H:i') }}</p>
+                                    </div>
+                                </div>
+                            @empty
+                                <p class="text-muted fs-sm text-center py-3">Bugün için görev yok.</p>
+                            @endforelse
                         </div>
                     </div>
+                </div>
+            </div>
 
-                    <div class="card-body p-0">
-                        <div class="table-responsive">
-                            <table class="table table-centered table-custom table-sm table-nowrap table-hover mb-0">
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <img src="assets/images/products/1.png" alt=""
-                                                    class="avatar-sm rounded-circle me-2">
-                                                <div>
-                                                    <span class="text-muted fs-xs">Audio</span>
-                                                    <h5 class="fs-base mb-0"><a href="ecommerce-product-details.html"
-                                                            class="text-body">Wireless Earbuds</a></h5>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Stock</span>
-                                            <h5 class="fs-base fw-normal mb-0">180 units</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Price</span>
-                                            <h5 class="fs-base fw-normal mb-0">$59.90</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Ratings</span>
-                                            <h5 class="fs-base fw-normal mb-0">
-                                                <span class="text-warning">
-                                                    <span class="ti ti-star-filled"></span>
-                                                    <span class="ti ti-star-filled"></span>
-                                                    <span class="ti ti-star-filled"></span>
-                                                    <span class="ti ti-star-filled"></span>
-                                                    <span class="ti ti-star"></span>
-                                                </span>
-                                                <span class="ms-1"><a href="ecommerce-reviews.html"
-                                                        class="link-reset fw-semibold">(52)</a></span>
-                                            </h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Status</span>
-                                            <h5 class="fs-base fw-normal mb-0"><i
-                                                    class="ti ti-circle-filled fs-xs text-success"></i> Active</h5>
-                                        </td>
-                                        <td style="width: 30px;">
-                                            <div class="dropdown">
-                                                <a href="#"
-                                                    class="dropdown-toggle text-muted drop-arrow-none card-drop p-0"
-                                                    data-bs-toggle="dropdown">
-                                                    <i class="ti ti-dots-vertical fs-lg"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <a href="#" class="dropdown-item">Edit Product</a>
-                                                    <a href="#" class="dropdown-item">Remove</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <img src="assets/images/products/2.png" alt=""
-                                                    class="avatar-sm rounded-circle me-2">
-                                                <div>
-                                                    <span class="text-muted fs-xs">Accessories</span>
-                                                    <h5 class="fs-base mb-0"><a href="ecommerce-product-details.html"
-                                                            class="text-body">Laptop Stand</a></h5>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Stock</span>
-                                            <h5 class="fs-base fw-normal mb-0">45 units</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Price</span>
-                                            <h5 class="fs-base fw-normal mb-0">$29.00</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Ratings</span>
-                                            <h5 class="fs-base fw-normal mb-0">
-                                                <span class="text-warning">
-                                                    <span class="ti ti-star-filled"></span>
-                                                    <span class="ti ti-star-filled"></span>
-                                                    <span class="ti ti-star-filled"></span>
-                                                    <span class="ti ti-star"></span>
-                                                    <span class="ti ti-star"></span>
-                                                </span>
-                                                <span class="ms-1"><a href="ecommerce-reviews.html"
-                                                        class="link-reset fw-semibold">(11)</a></span>
-                                            </h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Status</span>
-                                            <h5 class="fs-base fw-normal mb-0"><i
-                                                    class="ti ti-circle-filled fs-xs text-warning"></i> Low Stock</h5>
-                                        </td>
-                                        <td style="width: 30px;">
-                                            <div class="dropdown">
-                                                <a href="#"
-                                                    class="dropdown-toggle text-muted drop-arrow-none card-drop p-0"
-                                                    data-bs-toggle="dropdown">
-                                                    <i class="ti ti-dots-vertical fs-lg"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <a href="#" class="dropdown-item">Edit Product</a>
-                                                    <a href="#" class="dropdown-item">Remove</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <img src="assets/images/products/3.png" alt=""
-                                                    class="avatar-sm rounded-circle me-2">
-                                                <div>
-                                                    <span class="text-muted fs-xs">Gadgets</span>
-                                                    <h5 class="fs-base mb-0"><a href="ecommerce-product-details.html"
-                                                            class="text-body">Drone Camera</a></h5>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Stock</span>
-                                            <h5 class="fs-base fw-normal mb-0">0 units</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Price</span>
-                                            <h5 class="fs-base fw-normal mb-0">$199.99</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Ratings</span>
-                                            <h5 class="fs-base fw-normal mb-0">
-                                                <span class="text-warning">
-                                                    <span class="ti ti-star-filled"></span>
-                                                    <span class="ti ti-star-filled"></span>
-                                                    <span class="ti ti-star-filled"></span>
-                                                    <span class="ti ti-star-filled"></span>
-                                                    <span class="ti ti-star-half-filled"></span>
-                                                </span>
-                                                <span class="ms-1"><a href="ecommerce-reviews.html"
-                                                        class="link-reset fw-semibold">(8)</a></span>
-                                            </h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Status</span>
-                                            <h5 class="fs-base fw-normal mb-0"><i
-                                                    class="ti ti-circle-filled fs-xs text-danger"></i> Out of Stock</h5>
-                                        </td>
-                                        <td style="width: 30px;">
-                                            <div class="dropdown">
-                                                <a href="#"
-                                                    class="dropdown-toggle text-muted drop-arrow-none card-drop p-0"
-                                                    data-bs-toggle="dropdown">
-                                                    <i class="ti ti-dots-vertical fs-lg"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <a href="#" class="dropdown-item">Edit Product</a>
-                                                    <a href="#" class="dropdown-item">Remove</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <img src="assets/images/products/4.png" alt=""
-                                                    class="avatar-sm rounded-circle me-2">
-                                                <div>
-                                                    <span class="text-muted fs-xs">Electronics</span>
-                                                    <h5 class="fs-base mb-0"><a href="ecommerce-product-details.html"
-                                                            class="text-body">Portable Projector</a></h5>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Stock</span>
-                                            <h5 class="fs-base fw-normal mb-0">32 units</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Price</span>
-                                            <h5 class="fs-base fw-normal mb-0">$120.00</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Ratings</span>
-                                            <h5 class="fs-base fw-normal mb-0">
-                                                <span class="text-warning">
-                                                    <span class="ti ti-star-filled"></span>
-                                                    <span class="ti ti-star-filled"></span>
-                                                    <span class="ti ti-star-filled"></span>
-                                                    <span class="ti ti-star"></span>
-                                                    <span class="ti ti-star"></span>
-                                                </span>
-                                                <span class="ms-1"><a href="ecommerce-reviews.html"
-                                                        class="link-reset fw-semibold">(16)</a></span>
-                                            </h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Status</span>
-                                            <h5 class="fs-base fw-normal mb-0"><i
-                                                    class="ti ti-circle-filled fs-xs text-warning"></i> Limited</h5>
-                                        </td>
-                                        <td style="width: 30px;">
-                                            <div class="dropdown">
-                                                <a href="#"
-                                                    class="dropdown-toggle text-muted drop-arrow-none card-drop p-0"
-                                                    data-bs-toggle="dropdown">
-                                                    <i class="ti ti-dots-vertical fs-lg"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <a href="#" class="dropdown-item">Edit Product</a>
-                                                    <a href="#" class="dropdown-item">Remove</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <img src="assets/images/products/5.png" alt=""
-                                                    class="avatar-sm rounded-circle me-2">
-                                                <div>
-                                                    <span class="text-muted fs-xs">Mobiles</span>
-                                                    <h5 class="fs-base mb-0"><a href="ecommerce-product-details.html"
-                                                            class="text-body">Smartphone G12</a></h5>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Stock</span>
-                                            <h5 class="fs-base fw-normal mb-0">85 units</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Price</span>
-                                            <h5 class="fs-base fw-normal mb-0">$499.00</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Ratings</span>
-                                            <h5 class="fs-base fw-normal mb-0">
-                                                <span class="text-warning">
-                                                    <span class="ti ti-star-filled"></span>
-                                                    <span class="ti ti-star-filled"></span>
-                                                    <span class="ti ti-star-filled"></span>
-                                                    <span class="ti ti-star-filled"></span>
-                                                    <span class="ti ti-star"></span>
-                                                </span>
-                                                <span class="ms-1"><a href="ecommerce-reviews.html"
-                                                        class="link-reset fw-semibold">(112)</a></span>
-                                            </h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Status</span>
-                                            <h5 class="fs-base fw-normal mb-0"><i
-                                                    class="ti ti-circle-filled fs-xs text-success"></i> Active</h5>
-                                        </td>
-                                        <td style="width: 30px;">
-                                            <div class="dropdown">
-                                                <a href="#"
-                                                    class="dropdown-toggle text-muted drop-arrow-none card-drop p-0"
-                                                    data-bs-toggle="dropdown">
-                                                    <i class="ti ti-dots-vertical fs-lg"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <a href="#" class="dropdown-item">Edit Product</a>
-                                                    <a href="#" class="dropdown-item">Remove</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
+            <!-- Son Mesajlar Omnichannel -->
+            <div class="col-xxl-4">
+                <div class="card h-100">
+                    <div class="card-header border-dashed pb-2">
+                        <h4 class="card-title mb-0">Son Sohbetler (Omnichannel)</h4>
+                    </div>
+                    <div class="card-body p-0" style="max-height: 400px; overflow-y:auto;">
+                        <ul class="list-group list-group-flush border-dashed">
+                            @forelse($recentConversations as $conv)
+                                <li class="list-group-item d-flex align-items-center p-3">
+                                    <div class="avatar-sm flex-shrink-0 me-3">
+                                        @php
+                                            $icon = 'ti-message'; $bg = 'bg-secondary';
+                                            $ph = strtolower($conv->platform ?? 'whatsapp');
+                                            if ($ph == 'whatsapp') { $icon = 'ti-brand-whatsapp'; $bg = 'bg-success'; }
+                                            if ($ph == 'instagram') { $icon = 'ti-brand-instagram'; $bg = 'bg-danger'; }
+                                            if ($ph == 'telegram') { $icon = 'ti-brand-telegram'; $bg = 'bg-info'; }
+                                        @endphp
+                                        <span class="avatar-title {{ $bg }}-subtle text-{{ str_replace('bg-','',$bg) }} rounded-circle">
+                                            <i class="ti {{ $icon }}"></i>
+                                        </span>
+                                    </div>
+                                    <div class="flex-grow-1 text-truncate">
+                                        <h6 class="fs-sm mb-1">{{ optional($conv->customer)->name ?? 'Bilinmeyen Müşteri' }}</h6>
+                                        <p class="fs-xs text-muted mb-0 text-truncate">{{ optional($conv->latestMessage)->body ?? 'Mesaj yok' }}</p>
+                                    </div>
+                                    <div class="text-end ms-2">
+                                        <span class="fs-xs text-muted">{{ $conv->updated_at->diffForHumans() }}</span>
+                                    </div>
+                                </li>
+                            @empty
+                                <li class="list-group-item p-4 text-center text-muted">Henüz sohbet yok.</li>
+                            @endforelse
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <img src="assets/images/products/6.png" alt=""
-                                                    class="avatar-sm rounded-circle me-2">
-                                                <div>
-                                                    <span class="text-muted fs-xs">Audio</span>
-                                                    <h5 class="fs-base mb-0"><a href="ecommerce-product-details.html"
-                                                            class="text-body">Noise Cancelling Headphones</a></h5>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Stock</span>
-                                            <h5 class="fs-base fw-normal mb-0">25 units</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Price</span>
-                                            <h5 class="fs-base fw-normal mb-0">$129.99</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Ratings</span>
-                                            <h5 class="fs-base fw-normal mb-0">
-                                                <span class="text-warning">
-                                                    <span class="ti ti-star-filled"></span>
-                                                    <span class="ti ti-star-filled"></span>
-                                                    <span class="ti ti-star-filled"></span>
-                                                    <span class="ti ti-star-filled"></span>
-                                                    <span class="ti ti-star-half-filled"></span>
-                                                </span>
-                                                <span class="ms-1"><a href="ecommerce-reviews.html"
-                                                        class="link-reset fw-semibold">(78)</a></span>
-                                            </h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Status</span>
-                                            <h5 class="fs-base fw-normal mb-0"><i
-                                                    class="ti ti-circle-filled fs-xs text-warning"></i> Low Stock</h5>
-                                        </td>
-                                        <td style="width: 30px;">
-                                            <div class="dropdown">
-                                                <a href="#"
-                                                    class="dropdown-toggle text-muted drop-arrow-none card-drop p-0"
-                                                    data-bs-toggle="dropdown">
-                                                    <i class="ti ti-dots-vertical fs-lg"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <a href="#" class="dropdown-item">Edit Product</a>
-                                                    <a href="#" class="dropdown-item">Remove</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <img src="assets/images/products/7.png" alt=""
-                                                    class="avatar-sm rounded-circle me-2">
-                                                <div>
-                                                    <span class="text-muted fs-xs">Home Tech</span>
-                                                    <h5 class="fs-base mb-0"><a href="ecommerce-product-details.html"
-                                                            class="text-body">Mini Air Purifier</a></h5>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Stock</span>
-                                            <h5 class="fs-base fw-normal mb-0">0 units</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Price</span>
-                                            <h5 class="fs-base fw-normal mb-0">$49.99</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Ratings</span>
-                                            <h5 class="fs-base fw-normal mb-0">
-                                                <span class="text-warning">
-                                                    <span class="ti ti-star-filled"></span>
-                                                    <span class="ti ti-star-filled"></span>
-                                                    <span class="ti ti-star-filled"></span>
-                                                    <span class="ti ti-star-half-filled"></span>
-                                                    <span class="ti ti-star"></span>
-                                                </span>
-                                                <span class="ms-1"><a href="ecommerce-reviews.html"
-                                                        class="link-reset fw-semibold">(34)</a></span>
-                                            </h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Status</span>
-                                            <h5 class="fs-base fw-normal mb-0"><i
-                                                    class="ti ti-circle-filled fs-xs text-danger"></i> Out of Stock</h5>
-                                        </td>
-                                        <td style="width: 30px;">
-                                            <div class="dropdown">
-                                                <a href="#"
-                                                    class="dropdown-toggle text-muted drop-arrow-none card-drop p-0"
-                                                    data-bs-toggle="dropdown">
-                                                    <i class="ti ti-dots-vertical fs-lg"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <a href="#" class="dropdown-item">Edit Product</a>
-                                                    <a href="#" class="dropdown-item">Remove</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <img src="assets/images/products/8.png" alt=""
-                                                    class="avatar-sm rounded-circle me-2">
-                                                <div>
-                                                    <span class="text-muted fs-xs">Accessories</span>
-                                                    <h5 class="fs-base mb-0"><a href="ecommerce-product-details.html"
-                                                            class="text-body">USB-C Docking Station</a></h5>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Stock</span>
-                                            <h5 class="fs-base fw-normal mb-0">142 units</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Price</span>
-                                            <h5 class="fs-base fw-normal mb-0">$89.00</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Ratings</span>
-                                            <h5 class="fs-base fw-normal mb-0">
-                                                <span class="text-warning">
-                                                    <span class="ti ti-star-filled"></span>
-                                                    <span class="ti ti-star-filled"></span>
-                                                    <span class="ti ti-star-filled"></span>
-                                                    <span class="ti ti-star-filled"></span>
-                                                    <span class="ti ti-star-filled"></span>
-                                                </span>
-                                                <span class="ms-1"><a href="ecommerce-reviews.html"
-                                                        class="link-reset fw-semibold">(64)</a></span>
-                                            </h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Status</span>
-                                            <h5 class="fs-base fw-normal mb-0"><i
-                                                    class="ti ti-circle-filled fs-xs text-success"></i> Active</h5>
-                                        </td>
-                                        <td style="width: 30px;">
-                                            <div class="dropdown">
-                                                <a href="#"
-                                                    class="dropdown-toggle text-muted drop-arrow-none card-drop p-0"
-                                                    data-bs-toggle="dropdown">
-                                                    <i class="ti ti-dots-vertical fs-lg"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <a href="#" class="dropdown-item">Edit Product</a>
-                                                    <a href="#" class="dropdown-item">Remove</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <img src="assets/images/products/9.png" alt=""
-                                                    class="avatar-sm rounded-circle me-2">
-                                                <div>
-                                                    <span class="text-muted fs-xs">Gadgets</span>
-                                                    <h5 class="fs-base mb-0"><a href="ecommerce-product-details.html"
-                                                            class="text-body">Digital Photo Frame</a></h5>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Stock</span>
-                                            <h5 class="fs-base fw-normal mb-0">58 units</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Price</span>
-                                            <h5 class="fs-base fw-normal mb-0">$74.95</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Ratings</span>
-                                            <h5 class="fs-base fw-normal mb-0">
-                                                <span class="text-warning">
-                                                    <span class="ti ti-star-filled"></span>
-                                                    <span class="ti ti-star-filled"></span>
-                                                    <span class="ti ti-star-filled"></span>
-                                                    <span class="ti ti-star-filled"></span>
-                                                    <span class="ti ti-star"></span>
-                                                </span>
-                                                <span class="ms-1"><a href="ecommerce-reviews.html"
-                                                        class="link-reset fw-semibold">(40)</a></span>
-                                            </h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Status</span>
-                                            <h5 class="fs-base fw-normal mb-0"><i
-                                                    class="ti ti-circle-filled fs-xs text-success"></i> Active</h5>
-                                        </td>
-                                        <td style="width: 30px;">
-                                            <div class="dropdown">
-                                                <a href="#"
-                                                    class="dropdown-toggle text-muted drop-arrow-none card-drop p-0"
-                                                    data-bs-toggle="dropdown">
-                                                    <i class="ti ti-dots-vertical fs-lg"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <a href="#" class="dropdown-item">Edit Product</a>
-                                                    <a href="#" class="dropdown-item">Remove</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                </tbody>
-                            </table>
-
-                        </div> <!-- end table-responsive-->
-                    </div> <!-- end card-body-->
-
-                    <div class="card-footer border-0">
-                        <div class="align-items-center justify-content-between row text-center text-sm-start">
-                            <div class="col-sm">
-                                <div data-table-pagination-info="products"></div>
-                            </div>
-                            <div class="col-sm-auto mt-3 mt-sm-0">
-                                <div data-table-pagination></div>
-                            </div> <!-- end col-->
-                        </div> <!-- end row-->
-                    </div> <!-- end card-footer-->
-                </div> <!-- end card-->
-            </div> <!-- end col-->
-
-            <div class="col-xxl-6">
-                <div data-table data-table-rows-per-page="7" class="card">
-                    <div class="card-header justify-content-between align-items-center border-dashed">
-                        <h4 class="card-title mb-0">Recent Orders</h4>
-                        <div class="d-flex gap-2">
-                            <a href="javascript:void(0);" class="btn btn-sm btn-soft-secondary">
-                                <i class="ti ti-plus me-1"></i> Add Order
-                            </a>
-                            <a href="javascript:void(0);" class="btn btn-sm btn-primary">
-                                <i class="ti ti-file-export me-1"></i> Export CSV
-                            </a>
-                        </div>
+            <!-- Takım Performans Analizi -->
+            <div class="col-xxl-4">
+                <div class="card h-100">
+                    <div class="card-header border-dashed pb-2">
+                        <h4 class="card-title mb-0">Temsilci Performansı</h4>
                     </div>
                     <div class="card-body p-0">
-                        <div class="table-responsive">
-                            <table class="table table-centered table-custom table-sm table-nowrap table-hover mb-0">
-                                <tbody>
+                        <table class="table table-centered table-nowrap table-hover mb-0">
+                            <thead class="bg-light bg-opacity-50">
+                                <tr>
+                                    <th class="border-0">Temsilci</th>
+                                    <th class="border-0 text-center">Fırsat (Win)</th>
+                                    <th class="border-0 text-end">Ciro</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($topPerformers as $perf)
                                     <tr>
                                         <td>
                                             <div class="d-flex align-items-center">
-                                                <img src="assets/images/users/user-1.jpg" alt=""
-                                                    class="avatar-sm rounded-circle me-2">
-                                                <div>
-                                                    <span class="text-muted fs-xs">Alice Cooper</span>
-                                                    <h5 class="fs-base mb-0"><a href="ecommerce-order-details.html"
-                                                            class="text-body">#ORD-2001</a></h5>
+                                                <div class="avatar-xs me-2">
+                                                    <span class="avatar-title bg-primary text-white rounded-circle fs-sm">{{ substr($perf->name, 0, 1) }}</span>
                                                 </div>
+                                                <h6 class="fs-sm fw-medium mb-0">{{ $perf->name }}</h6>
                                             </div>
                                         </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Product</span>
-                                            <h5 class="fs-base mb-0 fw-normal">Noise Cancelling Headphones</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Date</span>
-                                            <h5 class="fs-base mb-0 fw-normal">2025-05-01</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Amount</span>
-                                            <h5 class="fs-base mb-0 fw-normal">$199.99</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Status</span>
-                                            <h5 class="fs-base mb-0 fw-normal"><i
-                                                    class="ti ti-circle-filled fs-xs text-success"></i> Delivered</h5>
-                                        </td>
-                                        <td style="width: 30px;">
-                                            <div class="dropdown">
-                                                <a href="#"
-                                                    class="dropdown-toggle text-muted drop-arrow-none card-drop p-0"
-                                                    data-bs-toggle="dropdown">
-                                                    <i class="ti ti-dots-vertical fs-lg"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <a href="#" class="dropdown-item">View Details</a>
-                                                    <a href="#" class="dropdown-item">Cancel Order</a>
-                                                </div>
-                                            </div>
-                                        </td>
+                                        <td class="text-center"><span class="badge bg-success-subtle text-success">{{ $perf->deals_won }}</span></td>
+                                        <td class="text-end fw-semibold">₺{{ number_format($perf->total_sales, 2) }}</td>
                                     </tr>
-
+                                @empty
                                     <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <img src="assets/images/users/user-2.jpg" alt=""
-                                                    class="avatar-sm rounded-circle me-2">
-                                                <div>
-                                                    <span class="text-muted fs-xs">David Lee</span>
-                                                    <h5 class="fs-base mb-0"><a href="ecommerce-order-details.html"
-                                                            class="text-body">#ORD-2002</a></h5>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Product</span>
-                                            <h5 class="fs-base mb-0 fw-normal">4K Monitor</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Date</span>
-                                            <h5 class="fs-base mb-0 fw-normal">2025-04-30</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Amount</span>
-                                            <h5 class="fs-base mb-0 fw-normal">$349.00</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Status</span>
-                                            <h5 class="fs-base mb-0 fw-normal"><i
-                                                    class="ti ti-circle-filled fs-xs text-warning"></i> Pending</h5>
-                                        </td>
-                                        <td style="width: 30px;">
-                                            <div class="dropdown">
-                                                <a href="#"
-                                                    class="dropdown-toggle text-muted drop-arrow-none card-drop p-0"
-                                                    data-bs-toggle="dropdown">
-                                                    <i class="ti ti-dots-vertical fs-lg"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <a href="#" class="dropdown-item">View Details</a>
-                                                    <a href="#" class="dropdown-item">Cancel Order</a>
-                                                </div>
-                                            </div>
-                                        </td>
+                                        <td colspan="3" class="text-center text-muted py-4">Performans verisi yok.</td>
                                     </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <div class="row">
+            <!-- Müşteri & Lead Akışı -->
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header border-dashed">
+                        <h4 class="card-title mb-0">Son Gelen Müşteri & Leadler</h4>
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table table-centered table-nowrap table-hover mb-0">
+                            <thead class="bg-light bg-opacity-50">
+                                <tr>
+                                    <th class="border-0">İsim</th>
+                                    <th class="border-0">Şirket</th>
+                                    <th class="border-0">Durum</th>
+                                    <th class="border-0">Değer</th>
+                                    <th class="border-0">Tarih</th>
+                                    <th class="border-0 text-end">İşlem</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($recentLeads as $lead)
+                                    @php
+                                        $sClass = 'bg-secondary';
+                                        if($lead->status == 'Lead') $sClass = 'bg-primary';
+                                        elseif($lead->status == 'Kazanıldı') $sClass = 'bg-success';
+                                        elseif($lead->status == 'Kaybedildi') $sClass = 'bg-danger';
+                                        elseif($lead->status == 'Pazarlık') $sClass = 'bg-warning text-dark';
+                                    @endphp
                                     <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <img src="assets/images/users/user-3.jpg" alt=""
-                                                    class="avatar-sm rounded-circle me-2">
-                                                <div>
-                                                    <span class="text-muted fs-xs">Sophia Turner</span>
-                                                    <h5 class="fs-base mb-0"><a href="ecommerce-order-details.html"
-                                                            class="text-body">#ORD-2003</a></h5>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Product</span>
-                                            <h5 class="fs-base mb-0 fw-normal">Mechanical Keyboard</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Date</span>
-                                            <h5 class="fs-base mb-0 fw-normal">2025-04-29</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Amount</span>
-                                            <h5 class="fs-base mb-0 fw-normal">$89.49</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Status</span>
-                                            <h5 class="fs-base mb-0 fw-normal"><i
-                                                    class="ti ti-circle-filled fs-xs text-success"></i> Completed</h5>
-                                        </td>
-                                        <td style="width: 30px;">
-                                            <div class="dropdown">
-                                                <a href="#"
-                                                    class="dropdown-toggle text-muted drop-arrow-none card-drop p-0"
-                                                    data-bs-toggle="dropdown">
-                                                    <i class="ti ti-dots-vertical fs-lg"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <a href="#" class="dropdown-item">View Details</a>
-                                                    <a href="#" class="dropdown-item">Cancel Order</a>
-                                                </div>
-                                            </div>
+                                        <td><h6 class="fs-sm fw-medium mb-0">{{ $lead->name }}</h6></td>
+                                        <td><span class="text-muted fs-sm">{{ $lead->company ?? '-' }}</span></td>
+                                        <td><span class="badge {{ $sClass }}-subtle text-{{ str_replace('bg-','',str_replace(' text-dark','',$sClass)) }}">{{ $lead->status }}</span></td>
+                                        <td class="fw-semibold">₺{{ number_format($lead->deal_value, 2) }}</td>
+                                        <td class="text-muted fs-sm">{{ $lead->created_at->format('d.m.Y') }}</td>
+                                        <td class="text-end">
+                                            <a href="/customers/{{ $lead->id }}" class="btn btn-sm btn-light">Profili Gör</a>
                                         </td>
                                     </tr>
-
+                                @empty
                                     <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <img src="assets/images/users/user-4.jpg" alt=""
-                                                    class="avatar-sm rounded-circle me-2">
-                                                <div>
-                                                    <span class="text-muted fs-xs">James Wilson</span>
-                                                    <h5 class="fs-base mb-0"><a href="ecommerce-order-details.html"
-                                                            class="text-body">#ORD-2004</a></h5>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Product</span>
-                                            <h5 class="fs-base mb-0 fw-normal">Drone Camera</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Date</span>
-                                            <h5 class="fs-base mb-0 fw-normal">2025-04-28</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Amount</span>
-                                            <h5 class="fs-base mb-0 fw-normal">$450.00</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Status</span>
-                                            <h5 class="fs-base mb-0 fw-normal"><i
-                                                    class="ti ti-circle-filled fs-xs text-danger"></i> Cancelled</h5>
-                                        </td>
-                                        <td style="width: 30px;">
-                                            <div class="dropdown">
-                                                <a href="#"
-                                                    class="dropdown-toggle text-muted drop-arrow-none card-drop p-0"
-                                                    data-bs-toggle="dropdown">
-                                                    <i class="ti ti-dots-vertical fs-lg"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <a href="#" class="dropdown-item">View Details</a>
-                                                    <a href="#" class="dropdown-item">Cancel Order</a>
-                                                </div>
-                                            </div>
-                                        </td>
+                                        <td colspan="6" class="text-center text-muted py-4">Kayıt bulunamadı.</td>
                                     </tr>
-
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <img src="assets/images/users/user-5.jpg" alt=""
-                                                    class="avatar-sm rounded-circle me-2">
-                                                <div>
-                                                    <span class="text-muted fs-xs">Ava Carter</span>
-                                                    <h5 class="fs-base mb-0"><a href="ecommerce-order-details.html"
-                                                            class="text-body">#ORD-2005</a></h5>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Product</span>
-                                            <h5 class="fs-base mb-0 fw-normal">Wireless Earbuds</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Date</span>
-                                            <h5 class="fs-base mb-0 fw-normal">2025-04-27</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Amount</span>
-                                            <h5 class="fs-base mb-0 fw-normal">$129.99</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Status</span>
-                                            <h5 class="fs-base mb-0 fw-normal"><i
-                                                    class="ti ti-circle-filled fs-xs text-success"></i> Completed</h5>
-                                        </td>
-                                        <td style="width: 30px;">
-                                            <div class="dropdown">
-                                                <a href="#"
-                                                    class="dropdown-toggle text-muted drop-arrow-none card-drop p-0"
-                                                    data-bs-toggle="dropdown">
-                                                    <i class="ti ti-dots-vertical fs-lg"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <a href="#" class="dropdown-item">View Details</a>
-                                                    <a href="#" class="dropdown-item">Cancel Order</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <img src="assets/images/users/user-6.jpg" alt=""
-                                                    class="avatar-sm rounded-circle me-2">
-                                                <div>
-                                                    <span class="text-muted fs-xs">Ethan Brooks</span>
-                                                    <h5 class="fs-base mb-0"><a href="ecommerce-order-details.html"
-                                                            class="text-body">#ORD-2011</a></h5>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Product</span>
-                                            <h5 class="fs-base mb-0 fw-normal">VR Headset</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Date</span>
-                                            <h5 class="fs-base mb-0 fw-normal">2025-05-02</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Amount</span>
-                                            <h5 class="fs-base mb-0 fw-normal">$299.00</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Status</span>
-                                            <h5 class="fs-base mb-0 fw-normal"><i
-                                                    class="ti ti-circle-filled fs-xs text-success"></i> Completed</h5>
-                                        </td>
-                                        <td style="width: 30px;">
-                                            <div class="dropdown">
-                                                <a href="#"
-                                                    class="dropdown-toggle text-muted drop-arrow-none card-drop p-0"
-                                                    data-bs-toggle="dropdown">
-                                                    <i class="ti ti-dots-vertical fs-lg"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <a href="#" class="dropdown-item">View Details</a>
-                                                    <a href="#" class="dropdown-item">Cancel Order</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <img src="assets/images/users/user-7.jpg" alt=""
-                                                    class="avatar-sm rounded-circle me-2">
-                                                <div>
-                                                    <span class="text-muted fs-xs">Mia Clarke</span>
-                                                    <h5 class="fs-base mb-0"><a href="ecommerce-order-details.html"
-                                                            class="text-body">#ORD-2012</a></h5>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Product</span>
-                                            <h5 class="fs-base mb-0 fw-normal">Portable Charger</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Date</span>
-                                            <h5 class="fs-base mb-0 fw-normal">2025-05-01</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Amount</span>
-                                            <h5 class="fs-base mb-0 fw-normal">$59.99</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Status</span>
-                                            <h5 class="fs-base mb-0 fw-normal"><i
-                                                    class="ti ti-circle-filled fs-xs text-success"></i> Completed</h5>
-                                        </td>
-                                        <td style="width: 30px;">
-                                            <div class="dropdown">
-                                                <a href="#"
-                                                    class="dropdown-toggle text-muted drop-arrow-none card-drop p-0"
-                                                    data-bs-toggle="dropdown">
-                                                    <i class="ti ti-dots-vertical fs-lg"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <a href="#" class="dropdown-item">View Details</a>
-                                                    <a href="#" class="dropdown-item">Cancel Order</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <img src="assets/images/users/user-8.jpg" alt=""
-                                                    class="avatar-sm rounded-circle me-2">
-                                                <div>
-                                                    <span class="text-muted fs-xs">Lucas Perry</span>
-                                                    <h5 class="fs-base mb-0"><a href="ecommerce-order-details.html"
-                                                            class="text-body">#ORD-2013</a></h5>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Product</span>
-                                            <h5 class="fs-base mb-0 fw-normal">Smartphone Gimbal</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Date</span>
-                                            <h5 class="fs-base mb-0 fw-normal">2025-04-30</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Amount</span>
-                                            <h5 class="fs-base mb-0 fw-normal">$149.99</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Status</span>
-                                            <h5 class="fs-base mb-0 fw-normal"><i
-                                                    class="ti ti-circle-filled fs-xs text-warning"></i> Pending</h5>
-                                        </td>
-                                        <td style="width: 30px;">
-                                            <div class="dropdown">
-                                                <a href="#"
-                                                    class="dropdown-toggle text-muted drop-arrow-none card-drop p-0"
-                                                    data-bs-toggle="dropdown">
-                                                    <i class="ti ti-dots-vertical fs-lg"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <a href="#" class="dropdown-item">View Details</a>
-                                                    <a href="#" class="dropdown-item">Cancel Order</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <img src="assets/images/users/user-9.jpg" alt=""
-                                                    class="avatar-sm rounded-circle me-2">
-                                                <div>
-                                                    <span class="text-muted fs-xs">Chloe Adams</span>
-                                                    <h5 class="fs-base mb-0"><a href="ecommerce-order-details.html"
-                                                            class="text-body">#ORD-2014</a></h5>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Product</span>
-                                            <h5 class="fs-base mb-0 fw-normal">LED Desk Lamp</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Date</span>
-                                            <h5 class="fs-base mb-0 fw-normal">2025-04-29</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Amount</span>
-                                            <h5 class="fs-base mb-0 fw-normal">$45.00</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Status</span>
-                                            <h5 class="fs-base mb-0 fw-normal"><i
-                                                    class="ti ti-circle-filled fs-xs text-success"></i> Delivered</h5>
-                                        </td>
-                                        <td style="width: 30px;">
-                                            <div class="dropdown">
-                                                <a href="#"
-                                                    class="dropdown-toggle text-muted drop-arrow-none card-drop p-0"
-                                                    data-bs-toggle="dropdown">
-                                                    <i class="ti ti-dots-vertical fs-lg"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <a href="#" class="dropdown-item">View Details</a>
-                                                    <a href="#" class="dropdown-item">Cancel Order</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <img src="assets/images/users/user-10.jpg" alt=""
-                                                    class="avatar-sm rounded-circle me-2">
-                                                <div>
-                                                    <span class="text-muted fs-xs">Benjamin Gray</span>
-                                                    <h5 class="fs-base mb-0"><a href="ecommerce-order-details.html"
-                                                            class="text-body">#ORD-2015</a></h5>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Product</span>
-                                            <h5 class="fs-base mb-0 fw-normal">Noise Meter</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Date</span>
-                                            <h5 class="fs-base mb-0 fw-normal">2025-04-28</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Amount</span>
-                                            <h5 class="fs-base mb-0 fw-normal">$75.49</h5>
-                                        </td>
-                                        <td>
-                                            <span class="text-muted fs-xs">Status</span>
-                                            <h5 class="fs-base mb-0 fw-normal"><i
-                                                    class="ti ti-circle-filled fs-xs text-success"></i> Delivered</h5>
-                                        </td>
-                                        <td style="width: 30px;">
-                                            <div class="dropdown">
-                                                <a href="#"
-                                                    class="dropdown-toggle text-muted drop-arrow-none card-drop p-0"
-                                                    data-bs-toggle="dropdown">
-                                                    <i class="ti ti-dots-vertical fs-lg"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <a href="#" class="dropdown-item">View Details</a>
-                                                    <a href="#" class="dropdown-item">Cancel Order</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                </tbody>
-                            </table>
-
-                        </div> <!-- end table-responsive-->
-                    </div> <!-- end card-body-->
-
-                    <div class="card-footer border-0">
-                        <div class="align-items-center justify-content-between row text-center text-sm-start">
-                            <div class="col-sm">
-                                <div data-table-pagination-info="orders"></div>
-                            </div>
-                            <div class="col-sm-auto mt-3 mt-sm-0">
-                                <div data-table-pagination></div>
-                            </div> <!-- end col-->
-                        </div> <!-- end row-->
-                    </div> <!-- end card-footer-->
-                </div> <!-- end card-->
-            </div> <!-- end col-->
-        </div> <!-- end row-->
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
+
+    <!-- Chart.js and Init Scripts -->
+    <script src="{{asset('assets/plugins/chartjs/chart.umd.js')}}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // CRM Funnel Doughnut Chart
+            var ctxFunnel = document.getElementById('crm-funnel-chart');
+            if(ctxFunnel) {
+                new Chart(ctxFunnel.getContext('2d'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: {!! json_encode($funnelLabels) !!},
+                        datasets: [{
+                            data: {!! json_encode($funnelValues) !!},
+                            backgroundColor: [
+                                '#3e60d5', '#47ad77', '#fa5c7c', '#ffbc00', '#39afd1', '#e3eaef', '#313a46'
+                            ],
+                            borderWidth: 1,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'right' }
+                        }
+                    }
+                });
+            }
+
+            // CRM Sales Trend Line Chart
+            var ctxSales = document.getElementById('crm-sales-chart');
+            if(ctxSales) {
+                new Chart(ctxSales.getContext('2d'), {
+                    type: 'line',
+                    data: {
+                        labels: {!! json_encode($salesChartLabels) !!},
+                        datasets: [{
+                            label: 'Kazanılan Satışlar (₺)',
+                            data: {!! json_encode($salesChartData) !!},
+                            borderColor: '#47ad77',
+                            backgroundColor: 'rgba(71, 173, 119, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.3,
+                            fill: true,
+                            pointRadius: 4,
+                            pointBackgroundColor: '#47ad77'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                    color: 'rgba(0,0,0,0.05)'
+                                }
+                            },
+                            x: {
+                                grid: { display: false }
+                            }
+                        },
+                        plugins: {
+                            legend: { display: false }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
 @endsection
