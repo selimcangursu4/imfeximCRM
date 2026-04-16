@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="page-title-head d-flex align-items-center">
             <div class="flex-grow-1">
-                <h4 class="fs-xl fw-bold m-0">Omnichannel Gelen Kutusu</h4>
+                <h4 class="fs-xl fw-bold m-0">Gelen Kutusu</h4>
             </div>
             <div class="text-end">
                 <ol class="breadcrumb m-0 py-0">

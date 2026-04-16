@@ -85,7 +85,7 @@
 
                 </div>
 
-                <div id="chat-container" data-chat class="card-body pt-0 mb-5 pb-2" data-simplebar style="max-height: calc(100vh - 370px);">
+                <div id="chat-container" data-chat class="card-body pt-0 pb-0" data-simplebar style="max-height: calc(100vh - 370px); padding-bottom: 140px !important;">
 
                     @if($selectedConversation)
                         @forelse($selectedConversation->messages as $message)
