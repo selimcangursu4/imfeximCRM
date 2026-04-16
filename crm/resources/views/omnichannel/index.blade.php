@@ -56,9 +56,22 @@
                         </p>
                     </div>
 
-                    <div class="d-flex align-items-center gap-1">
-                 
+                    <div class="d-flex align-items-center gap-2">
                         @if($selectedConversation)
+                        {{-- AI Toggle Bandı --}}
+                        <div id="aiStatusBanner" class="d-flex align-items-center gap-2 px-3 py-1 rounded-pill border {{ $selectedConversation->is_ai_active ? 'border-success bg-success-subtle' : 'border-warning bg-warning-subtle' }}">
+                            <i data-lucide="{{ $selectedConversation->is_ai_active ? 'cpu' : 'user' }}" id="aiStatusIcon" class="icon-sm {{ $selectedConversation->is_ai_active ? 'text-success' : 'text-warning' }}"></i>
+                            <span id="aiStatusText" class="fw-medium d-none d-md-inline" style="font-size:11px;" >
+                                {{ $selectedConversation->is_ai_active ? 'AI Aktif' : 'Manuel Mod' }}
+                            </span>
+                            <div class="form-check form-switch mb-0">
+                                <input class="form-check-input" type="checkbox" id="aiToggle"
+                                    {{ $selectedConversation->is_ai_active ? 'checked' : '' }}
+                                    onchange="toggleAiStatus({{ $selectedConversation->id }})"
+                                    title="Yapay Zekayı Aç / Kapat">
+                            </div>
+                        </div>
+
                         <div class="dropdown">
                             <button type="button" class="btn btn-default btn-icon" data-bs-toggle="dropdown" aria-expanded="false" title="More">
                                 <i class="ti ti-dots-vertical fs-lg"></i>
@@ -494,5 +507,74 @@
                 });
             });
         });
+
+        // AI Toggle
+        window.toggleAiStatus = function(conversationId) {
+            let toggle = document.getElementById('aiToggle');
+            let isActive = toggle.checked ? 1 : 0;
+
+            if (!isActive) {
+                Swal.fire({
+                    title: 'Yapay Zekayı Durdur?',
+                    text: 'Bu sohbette AI otomatik cevap üretmeyi durduracak.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#f59e0b',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: "Evet, AI'yı Durdur",
+                    cancelButtonText: 'Vazgeç'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        sendAiToggle(conversationId, isActive);
+                    } else {
+                        toggle.checked = true;
+                    }
+                });
+            } else {
+                sendAiToggle(conversationId, isActive);
+            }
+        };
+
+        function sendAiToggle(conversationId, isActive) {
+            fetch(`/omnichannel/${conversationId}/toggle-ai`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify({ is_ai_active: isActive })
+            })
+            .then(r => r.json())
+            .then(data => {
+                const banner = document.getElementById('aiStatusBanner');
+                const statusText = document.getElementById('aiStatusText');
+                const statusIcon = document.getElementById('aiStatusIcon');
+
+                if (isActive) {
+                    banner.className = 'd-flex align-items-center gap-2 px-3 py-1 rounded-pill border border-success bg-success-subtle';
+                    statusText.className = 'fw-medium d-none d-md-inline text-success';
+                    statusText.style.fontSize = '11px';
+                    statusText.textContent = 'AI Aktif';
+                    statusIcon.setAttribute('data-lucide', 'cpu');
+                    statusIcon.className = 'icon-sm text-success';
+                    Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'AI Asistan devreye alındı', showConfirmButton: false, timer: 2000 });
+                } else {
+                    banner.className = 'd-flex align-items-center gap-2 px-3 py-1 rounded-pill border border-warning bg-warning-subtle';
+                    statusText.className = 'fw-medium d-none d-md-inline text-warning';
+                    statusText.style.fontSize = '11px';
+                    statusText.textContent = 'Manuel Mod';
+                    statusIcon.setAttribute('data-lucide', 'user');
+                    statusIcon.className = 'icon-sm text-warning';
+                    Swal.fire({ toast: true, position: 'top-end', icon: 'info', title: 'AI durduruldu. Siz devralabilirsiniz.', showConfirmButton: false, timer: 2500 });
+                }
+
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            })
+            .catch(() => {
+                Swal.fire('Hata', 'AI durumu güncellenirken sorun oluştu.', 'error');
+                document.getElementById('aiToggle').checked = !document.getElementById('aiToggle').checked;
+            });
+        }
     </script>
 @endsection

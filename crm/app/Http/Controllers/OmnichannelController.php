@@ -13,10 +13,17 @@ class OmnichannelController extends Controller
 {
     public function toggleAi(Request $request, Conversation $conversation)
     {
+        // Supports both JSON body (fetch API) and form data (jQuery AJAX)
+        $isActive = $request->input('is_ai_active') ?? $request->json('is_ai_active');
+        
         $conversation->update([
-            'is_ai_active' => $request->boolean('is_ai_active')
+            'is_ai_active' => (bool) $isActive
         ]);
-        return response()->json(['success' => true]);
+
+        return response()->json([
+            'success' => true,
+            'is_ai_active' => $conversation->is_ai_active
+        ]);
     }
     public function index(Request $request)
     {

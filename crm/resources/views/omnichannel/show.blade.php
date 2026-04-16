@@ -40,23 +40,34 @@
 
             <div class="col-xl-6 mb-3 mb-xl-0">
                 <div class="card h-100">
-                        <div class="d-flex w-100 justify-content-between align-items-center">
-                            <div>
-                                <h5 class="card-title mb-1">{{ optional($conversation->customer)->name ?? 'Anonim Müşteri' }}</h5>
-                                <small class="text-muted">{{ optional($conversation->channel)->provider ?? 'Platform yok' }}</small>
-                            </div>
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="form-check form-switch mb-0">
-                                    <input class="form-check-input" type="checkbox" id="aiToggle" {{ $conversation->is_ai_active ? 'checked' : '' }} onchange="toggleAiStatus()">
-                                    <label class="form-check-label mb-0" for="aiToggle">
-                                        <span class="badge {{ $conversation->is_ai_active ? 'bg-primary' : 'bg-secondary' }}" id="aiStatusBadge">
-                                            {{ $conversation->is_ai_active ? 'AI Aktif' : 'AI Pasif (Manuel)' }}
-                                        </span>
-                                    </label>
-                                </div>
-                                <span class="badge bg-success">{{ ucfirst($conversation->status) }}</span>
-                            </div>
+                    <!-- Sohbet Başlık Bandı -->
+                    <div class="card-header d-flex justify-content-between align-items-center py-2">
+                        <div>
+                            <h6 class="mb-0 fw-bold">{{ optional($conversation->customer)->name ?? 'Anonim Müşteri' }}</h6>
+                            <small class="text-muted">
+                                <i data-lucide="message-circle" class="icon-xs me-1"></i>
+                                {{ optional($conversation->channel)->provider ?? 'Bilinmiyor' }}
+                            </small>
                         </div>
+
+                        <!-- AI Toggle Bandı -->
+                        <div class="d-flex align-items-center gap-2">
+                            <div id="aiStatusBanner" class="d-flex align-items-center gap-2 px-3 py-1 rounded-pill border {{ $conversation->is_ai_active ? 'border-success bg-success-subtle' : 'border-warning bg-warning-subtle' }}">
+                                <i data-lucide="{{ $conversation->is_ai_active ? 'cpu' : 'user' }}" id="aiStatusIcon" class="icon-sm {{ $conversation->is_ai_active ? 'text-success' : 'text-warning' }}"></i>
+                                <span id="aiStatusText" class="fw-medium fs-xs {{ $conversation->is_ai_active ? 'text-success' : 'text-warning' }}">
+                                    {{ $conversation->is_ai_active ? 'AI Asistan Aktif' : 'Manuel Mod (Personel)' }}
+                                </span>
+                                <div class="form-check form-switch mb-0 ms-1">
+                                    <input class="form-check-input" type="checkbox" id="aiToggle"
+                                        {{ $conversation->is_ai_active ? 'checked' : '' }}
+                                        onchange="toggleAiStatus()"
+                                        title="{{ $conversation->is_ai_active ? 'AI\'yı Durdur' : 'AI\'yı Başlat' }}">
+                                </div>
+                            </div>
+                            <span class="badge bg-success">{{ ucfirst($conversation->status) }}</span>
+                        </div>
+                    </div>
+
                     <div class="card-body d-flex flex-column p-3">
                         <div class="chat-messages flex-grow-1 overflow-auto mb-3" style="max-height: 64vh;">
                             @forelse($conversation->messages as $message)
@@ -129,8 +140,34 @@
 @section('scripts')
 <script>
 function toggleAiStatus() {
-    let isActive = document.getElementById('aiToggle').checked ? 1 : 0;
-    
+    let toggle = document.getElementById('aiToggle');
+    let isActive = toggle.checked ? 1 : 0;
+
+    // Eğer AI'yı kapatıyorsa bir onay sor
+    if (!isActive) {
+        Swal.fire({
+            title: 'Yapay Zekayı Durdur?',
+            text: 'Bu sohbette AI otomatik cevap üretmeyi durduracak. Personel olarak devralabilirsiniz.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#f59e0b',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Evet, AI\'yı Durdur',
+            cancelButtonText: 'Vazgeç'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                sendToggleRequest(isActive);
+            } else {
+                // Geri al - kullanıcı vazgeçti
+                toggle.checked = true;
+            }
+        });
+    } else {
+        sendToggleRequest(isActive);
+    }
+}
+
+function sendToggleRequest(isActive) {
     $.ajax({
         url: '{{ route("omnichannel.toggle-ai", $conversation) }}',
         method: 'POST',
@@ -139,12 +176,35 @@ function toggleAiStatus() {
             is_ai_active: isActive
         },
         success: function(response) {
-            let badge = $('#aiStatusBadge');
-            if(isActive) {
-                badge.removeClass('bg-secondary').addClass('bg-primary').text('AI Aktif');
+            let banner = document.getElementById('aiStatusBanner');
+            let statusText = document.getElementById('aiStatusText');
+            let statusIcon = document.getElementById('aiStatusIcon');
+
+            if (isActive) {
+                // AI Aktif görseli
+                banner.className = 'd-flex align-items-center gap-2 px-3 py-1 rounded-pill border border-success bg-success-subtle';
+                statusText.className = 'fw-medium fs-xs text-success';
+                statusText.textContent = 'AI Asistan Aktif';
+                statusIcon.setAttribute('data-lucide', 'cpu');
+                statusIcon.className = 'icon-sm text-success';
+                Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'AI Asistan tekrar devreye alındı', showConfirmButton: false, timer: 2000 });
             } else {
-                badge.removeClass('bg-primary').addClass('bg-secondary').text('AI Pasif (Manuel)');
+                // Manuel Mod görseli
+                banner.className = 'd-flex align-items-center gap-2 px-3 py-1 rounded-pill border border-warning bg-warning-subtle';
+                statusText.className = 'fw-medium fs-xs text-warning';
+                statusText.textContent = 'Manuel Mod (Personel)';
+                statusIcon.setAttribute('data-lucide', 'user');
+                statusIcon.className = 'icon-sm text-warning';
+                Swal.fire({ toast: true, position: 'top-end', icon: 'info', title: 'AI durduruldu. Siz devralabilirsiniz.', showConfirmButton: false, timer: 2500 });
             }
+
+            // İkonları yenile (lucide)
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        },
+        error: function() {
+            Swal.fire('Hata', 'AI durumu güncellenirken bir hata oluştu.', 'error');
+            // Toggle'ı geri al
+            document.getElementById('aiToggle').checked = !document.getElementById('aiToggle').checked;
         }
     });
 }
