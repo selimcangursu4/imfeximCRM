@@ -257,39 +257,50 @@
     <div class="modal fade" id="customerModal" tabindex="-1" aria-labelledby="customerModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content text-dark">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="customerModalLabel">Müşteri Bilgileri</h5>
+                <div class="modal-header border-dashed">
+                    <h5 class="modal-title" id="customerModalLabel"><i class="ti ti-user-circle me-1"></i> Müşteri Profili</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
                 </div>
-                <form id="customerUpdateForm">
-                    <div class="modal-body">
-                        <input type="hidden" id="modalCustomerId">
-                        <div class="mb-3">
-                            <label class="form-label">Ad Soyad</label>
-                            <input type="text" class="form-control" name="name" id="modalCustomerName" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">E-posta</label>
-                            <input type="email" class="form-control" name="email" id="modalCustomerEmail">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Telefon / PSID</label>
-                            <input type="text" class="form-control" name="phone" id="modalCustomerPhone" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Firma</label>
-                            <input type="text" class="form-control" name="company" id="modalCustomerCompany">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Adres</label>
-                            <textarea class="form-control" name="address" id="modalCustomerAddress" rows="3"></textarea>
+                <div class="modal-body p-4 text-center">
+                    <div class="mb-4">
+                        <div class="avatar-xl rounded-circle border border-4 border-light shadow-sm bg-primary-subtle d-inline-flex align-items-center justify-content-center text-primary fw-bold fs-1" id="modalCustomerInitials">
+                            M
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
-                        <button type="submit" class="btn btn-primary">Değişiklikleri Kaydet</button>
-                    </div>
-                </form>
+                    <h4 class="fw-bold mb-1" id="modalCustomerNameText">Müşteri Adı</h4>
+                    <p class="text-muted d-flex align-items-center justify-content-center gap-2 mb-4">
+                        <i class="ti ti-mail fs-lg"></i> <span id="modalCustomerEmailText">Belirtilmedi</span>
+                    </p>
+                    
+                    <ul class="list-group list-group-flush text-start border-top">
+                        <li class="list-group-item d-flex align-items-center px-0 py-3">
+                            <i class="ti ti-phone fs-lg text-primary me-3 bg-primary-subtle p-2 rounded"></i>
+                            <div>
+                                <h6 class="mb-0 fs-xs text-muted">Telefon / İletişim</h6>
+                                <div class="fw-medium" id="modalCustomerPhoneText">Belirtilmedi</div>
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center px-0 py-3">
+                            <i class="ti ti-building fs-lg text-info me-3 bg-info-subtle p-2 rounded"></i>
+                            <div>
+                                <h6 class="mb-0 fs-xs text-muted">Firma Adı</h6>
+                                <div class="fw-medium" id="modalCustomerCompanyText">Belirtilmedi</div>
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center px-0 py-3">
+                            <i class="ti ti-map-pin fs-lg text-warning me-3 bg-warning-subtle p-2 rounded"></i>
+                            <div>
+                                <h6 class="mb-0 fs-xs text-muted">Adres Bilgisi</h6>
+                                <div class="fw-medium" id="modalCustomerAddressText">Belirtilmedi</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer bg-light-subtle justify-content-center border-top-0 pt-0">
+                    <a href="#" id="modalCustomerProfileLink" class="btn btn-primary w-100 rounded-pill">
+                        <i class="ti ti-arrow-right"></i> Müşteri Yönetim Paneline Git
+                    </a>
+                </div>
             </div>
         </div>
     </div>
@@ -466,12 +477,13 @@
                 .then(data => {
                     if (data.success) {
                         const c = data.customer;
-                        document.getElementById('modalCustomerId').value = c.id;
-                        document.getElementById('modalCustomerName').value = c.name;
-                        document.getElementById('modalCustomerEmail').value = c.email || '';
-                        document.getElementById('modalCustomerPhone').value = c.phone || '';
-                        document.getElementById('modalCustomerCompany').value = c.company || '';
-                        document.getElementById('modalCustomerAddress').value = c.address || '';
+                        document.getElementById('modalCustomerInitials').textContent = c.name.charAt(0).toUpperCase();
+                        document.getElementById('modalCustomerNameText').textContent = c.name;
+                        document.getElementById('modalCustomerEmailText').textContent = c.email || 'Belirtilmedi';
+                        document.getElementById('modalCustomerPhoneText').textContent = c.phone || 'Belirtilmedi';
+                        document.getElementById('modalCustomerCompanyText').textContent = c.company || 'Belirtilmedi';
+                        document.getElementById('modalCustomerAddressText').textContent = c.address || 'Belirtilmedi';
+                        document.getElementById('modalCustomerProfileLink').href = `/customers/${c.id}`;
                         
                         const modal = new bootstrap.Modal(document.getElementById('customerModal'));
                         modal.show();
@@ -479,33 +491,6 @@
                 });
             };
 
-            const customerForm = document.getElementById('customerUpdateForm');
-            customerForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const id = document.getElementById('modalCustomerId').value;
-                const formData = new FormData(customerForm);
-                
-                fetch(`/omnichannel/customer/${id}`, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert(data.message);
-                        bootstrap.Modal.getInstance(document.getElementById('customerModal')).hide();
-                        // Sidebar'ı güncelle ki isim değişikliği yansısın
-                        syncSidebar();
-                        // Başlıktaki ismi güncelle
-                        const nameEl = document.querySelector('[data-chat-username]');
-                        if (nameEl) nameEl.textContent = data.customer.name;
-                    }
-                });
-            });
         });
 
         // AI Toggle

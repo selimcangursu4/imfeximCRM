@@ -35,9 +35,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
+    Route::post('/customers', [CustomerController::class, 'store'])->name('customers.store');
     Route::get('/customers/{customer}/edit', [CustomerController::class, 'edit'])->name('customers.edit');
     Route::put('/customers/{customer}', [CustomerController::class, 'update'])->name('customers.update');
     Route::post('/customers/{customer}/ajax-update', [CustomerController::class, 'updateAjax'])->name('customers.ajax.update');
+    Route::post('/customers/{customer}/assign', [CustomerController::class, 'assignToMe'])->name('customers.assign');
     Route::get('/customers/{customer}/chat', [CustomerController::class, 'startChat'])->name('customers.chat');
     Route::get('/customers/{customer}', [CustomerProfileController::class, 'show'])->name('customers.show');
 
@@ -61,7 +63,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [\App\Http\Controllers\ReportController::class, 'index'])->name('index');
         Route::get('/sales', [\App\Http\Controllers\ReportController::class, 'sales'])->name('sales');
         Route::get('/funnel', [\App\Http\Controllers\ReportController::class, 'funnel'])->name('funnel');
-        Route::get('/leads', [\App\Http\Controllers\ReportController::class, 'leads'])->name('leads');
         Route::get('/activities', [\App\Http\Controllers\ReportController::class, 'activities'])->name('activities');
         Route::get('/time', [\App\Http\Controllers\ReportController::class, 'time'])->name('time');
         Route::get('/revenue', [\App\Http\Controllers\ReportController::class, 'revenue'])->name('revenue');
@@ -82,6 +83,15 @@ Route::middleware('auth')->group(function () {
     Route::post('/settings/users', [UserController::class, 'store'])->name('settings.users.store');
     Route::get('/settings/users/{user}', [UserController::class, 'show'])->name('settings.users.show');
     Route::delete('/settings/users/{user}', [UserController::class, 'destroy'])->name('settings.users.destroy');
+
+    // Ürünler ve Hizmetler Modülü
+    Route::get('/products', [\App\Http\Controllers\ProductController::class, 'index'])->name('products.index');
+    Route::get('/products/data', [\App\Http\Controllers\ProductController::class, 'getData'])->name('products.data');
+    Route::post('/products', [\App\Http\Controllers\ProductController::class, 'store'])->name('products.store');
+    Route::get('/products/{product}', [\App\Http\Controllers\ProductController::class, 'show'])->name('products.show');
+    Route::get('/products/{product}/edit', [\App\Http\Controllers\ProductController::class, 'edit'])->name('products.edit');
+    Route::put('/products/{product}', [\App\Http\Controllers\ProductController::class, 'update'])->name('products.update');
+    Route::delete('/products/{product}', [\App\Http\Controllers\ProductController::class, 'destroy'])->name('products.destroy');
 
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::get('/settings/api', [ApiSettingController::class, 'index'])->name('settings.api.index');

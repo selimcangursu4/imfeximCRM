@@ -27,6 +27,8 @@
                                 <th>#</th>
                                 <th>Ad Soyad</th>
                                 <th>E-posta</th>
+                                <th>Rol</th>
+                                <th>Departman</th>
                                 <th>Kayıt Tarihi</th>
                                 <th class="text-end">İşlemler</th>
                             </tr>
@@ -56,6 +58,19 @@
                         <div class="mb-3">
                             <label class="form-label fs-xs fw-bold">E-posta Adresi</label>
                             <input type="email" name="email" id="userEmail" class="form-control" placeholder="Örn: ahmet@firma.com" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fs-xs fw-bold">Rol</label>
+                            <select name="role" id="userRole" class="form-select" required>
+                                <option value="satis_danismani">Satış Danışmanı</option>
+                                <option value="admin">Admin</option>
+                                <option value="yonetici">Yönetici</option>
+                                <option value="web_developer">Web Developer</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fs-xs fw-bold">Departman</label>
+                            <input type="text" name="department" id="userDepartment" class="form-control" placeholder="Örn: Satış">
                         </div>
                         <div class="mb-3">
                             <label class="form-label fs-xs fw-bold">Şifre</label>
@@ -97,8 +112,10 @@
                         render: function(data) {
                             return `<div class="d-flex align-items-center gap-2">
                                 <div class="avatar-group-item">
-                                    <div class="avatar avatar-sm bg-primary-subtle text-primary rounded-circle">
-                                        ${data.charAt(0).toUpperCase()}
+                                    <div class="avatar avatar-sm flex-shrink-0">
+                                        <span class="avatar-title bg-primary-subtle text-primary rounded-circle">
+                                            ${data.charAt(0).toUpperCase()}
+                                        </span>
                                     </div>
                                 </div>
                                 <span class="fw-bold">${data}</span>
@@ -106,6 +123,20 @@
                         }
                     },
                     { data: 'email', name: 'email' },
+                    { 
+                        data: 'role', 
+                        name: 'role',
+                        render: function(data) {
+                            const roles = {
+                                'admin': '<span class="badge bg-danger-subtle text-danger">Admin</span>',
+                                'yonetici': '<span class="badge bg-warning-subtle text-warning">Yönetici</span>',
+                                'web_developer': '<span class="badge bg-info-subtle text-info">Web Developer</span>',
+                                'satis_danismani': '<span class="badge bg-success-subtle text-success">Satış Danışmanı</span>'
+                            };
+                            return roles[data] || '<span class="badge bg-secondary-subtle text-secondary">Bilinmeyen</span>';
+                        }
+                    },
+                    { data: 'department', name: 'department', render: data => data || '-' },
                     { 
                         data: 'created_at', 
                         name: 'created_at',
@@ -120,7 +151,7 @@
                         className: 'text-end',
                         render: function(data, type, row) {
                             return `
-                                <button class="btn btn-sm btn-icon btn-light edit-user" data-id="${row.id}" title="Düzenle">
+                                <button class="btn btn-sm btn-icon btn-light edit-user" data-id="${row.id}" title="Düzenle / Detay">
                                     <i class="ti ti-edit"></i>
                                 </button>
                                 <button class="btn btn-sm btn-icon btn-light-danger delete-user" data-id="${row.id}" title="Sil">
@@ -175,6 +206,8 @@
                         $('#userId').val(response.data.id);
                         $('#userName').val(response.data.name);
                         $('#userEmail').val(response.data.email);
+                        $('#userRole').val(response.data.role || 'satis_danismani');
+                        $('#userDepartment').val(response.data.department || '');
                         $('#userPassword').val('');
                         $('#passwordNote').text('Şifreyi değiştirmek istemiyorsanız boş bırakın.');
                         $('#userModal').modal('show');

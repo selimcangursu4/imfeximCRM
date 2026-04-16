@@ -7,6 +7,11 @@
                 <h4 class="fs-xl fw-bold m-0">Müşteri Profili</h4>
             </div>
             <div class="text-end d-flex gap-2">
+                @if(is_null($customer->assigned_user_id))
+                    <button type="button" class="btn btn-warning assign-to-me-btn" data-id="{{ $customer->id }}">
+                        <i class="ti ti-user-plus me-1"></i> Müşteriyi Kendime Ata
+                    </button>
+                @endif
                 <a href="{{ route('customers.chat', $customer) }}" class="btn btn-success">
                     <i class="ti ti-message-2 me-1"></i> Sohbeti Aç
                 </a>
@@ -436,6 +441,55 @@
                                         }
                                     });
                                 }
+                            }
+                        });
+                    }
+                });
+            });
+
+            // Müşteriyi Kendime Ata (AJAX)
+            $(document).on('click', '.assign-to-me-btn', function () {
+                const id = $(this).data('id');
+                const btn = $(this);
+
+                Swal.fire({
+                    title: 'Emin misiniz?',
+                    text: "Bu müşteriyi kendi üzerinize atayacaksınız. Satış süreçleri sizin sorumluluğunuzda olacak.",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Evet, Üzerime Al!',
+                    cancelButtonText: 'Vazgeç'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        btn.prop('disabled', true).text('Atanıyor...');
+                        $.ajax({
+                            url: `/customers/${id}/assign`,
+                            method: 'POST',
+                            data: { _token: '{{ csrf_token() }}' },
+                            success: function (response) {
+                                if (response.success) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Başarılı!',
+                                        text: response.message,
+                                        timer: 1500,
+                                        showConfirmButton: false
+                                    });
+                                    setTimeout(() => {
+                                        location.reload();
+                                    }, 1000);
+                                }
+                            },
+                            error: function (xhr) {
+                                const msg = xhr.responseJSON ? xhr.responseJSON.message : 'Atama sırasında bir hata oluştu.';
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Hata',
+                                    text: msg
+                                });
+                                btn.prop('disabled', false).html('<i class="ti ti-user-plus me-1"></i> Müşteriyi Kendime Ata');
                             }
                         });
                     }

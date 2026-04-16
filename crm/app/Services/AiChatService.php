@@ -43,10 +43,38 @@ class AiChatService
 
         // 1. Bilgi Bankası (Knowledge Base) Verilerini Çek
         $kbDocs = KnowledgeBase::where('is_active', true)->get();
-        $systemContext = "Sen professiyonel bir müşteri temsilcisisin. Sadece aşağıdaki bilgilere dayanarak kullanıcılara Türkçe cevap vermelisin. Eğer bilgi aşağıda yoksa, yetkili birime aktaracağını söyle ve konuyu uzatma. Cevapların direkt kullanıcıya (müşteriye) dönük doğal olmalı.\n\n[BİLGİ BANKASI]:\n";
-        
-        foreach ($kbDocs as $doc) {
-            $systemContext .= "- {$doc->title}: {$doc->content}\n";
+
+        // 2. Ayarlardan Davranış Kişiliği ve Kuralları Çek
+        $customBehavior = data_get($apiSetting->settings, 'behavior', '');
+        $customRules    = data_get($apiSetting->settings, 'rules', []);
+
+        // 3. Sistem Komutunu (System Prompt) Oluştur
+        $systemContext = '';
+
+        // Özel kişilik/davranış varsa onu kullan, yoksa varsayılan
+        if (!empty(trim($customBehavior))) {
+            $systemContext .= $customBehavior . "\n\n";
+        } else {
+            $systemContext .= "Sen profesyonel bir müşteri temsilcisisin. Müşterilerle sıcakkanlı, samimi ve profesyonel bir şekilde konuş. Sadece aşağıdaki Bilgi Bankası'ndaki bilgilere dayanarak Türkçe cevap ver.\n\n";
+        }
+
+        // Kurallar
+        if (!empty($customRules)) {
+            $systemContext .= "[UYULMASI ZORUNLU KURALLAR]:\n";
+            foreach ($customRules as $i => $rule) {
+                $systemContext .= ($i + 1) . ". " . $rule . "\n";
+            }
+            $systemContext .= "\n";
+        } else {
+            $systemContext .= "[TEMEL KURALLAR]:\n1. SADECE Bilgi Bankası'ndaki bilgilere dayanarak cevap ver.\n2. Bilgi Bankası'nda olmayan bir konu sorulursa kibarca yetkili birime aktardığını söyle.\n3. Yanıtlarını kısa tut.\n\n";
+        }
+
+        // Bilgi Bankası Dokümanları
+        if ($kbDocs->isNotEmpty()) {
+            $systemContext .= "[BİLGİ BANKASI]:\n";
+            foreach ($kbDocs as $doc) {
+                $systemContext .= "- {$doc->title}: {$doc->content}\n";
+            }
         }
 
         // 2. Önceki konuşma geçmişini çek (Son 6 mesaj)

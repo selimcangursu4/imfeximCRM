@@ -54,7 +54,8 @@
                         <h5 class="card-title mb-0">Yapay Zeka API Ayarları</h5>
                     </div>
                     <div class="card-body">
-                        <p>ChatGPT veya Gemini API'nizi yapılandırın. Bilgi bankasına göre otomatik mesaj yanıtlarını buradan yönetin.</p>
+                        <p>ChatGPT veya Gemini API'nizi yapılandırın. Bilgi bankasına göre otomatik mesaj yanıtlarını
+                            buradan yönetin.</p>
                         <a href="{{ route('settings.ai.index') }}" class="btn btn-primary w-100">Görüntüle</a>
                     </div>
                 </div>
@@ -82,9 +83,17 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Departmanlar ve Roller</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Departmanlarınızı ve rollerinizi buradan yönetebilirsiniz.</p>
+                        <a href="#" class="btn btn-primary w-100">Görüntüle</a>
+                    </div>
+                </div>
+            </div>
         </div>
-
-
-
     </div>
 @endsection

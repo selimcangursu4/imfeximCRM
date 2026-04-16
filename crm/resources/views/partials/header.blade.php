@@ -126,8 +126,13 @@
                 <div class="dropdown">
                     <a class="topbar-link dropdown-toggle drop-arrow-none px-2" data-bs-toggle="dropdown"
                         data-bs-offset="0,19" href="#!" aria-haspopup="false" aria-expanded="false">
-                        <img src="assets/images/users/user-3.jpg" width="32" class="rounded-circle me-lg-2 d-flex"
-                            alt="user-image">
+                        @if(auth()->user()->profile_photo)
+                            <img src="{{ asset('storage/' . auth()->user()->profile_photo) }}" width="32" height="32" class="rounded-circle me-lg-2 d-flex shadow-sm" style="object-fit: cover;" alt="user-image">
+                        @else
+                            <div class="rounded-circle me-lg-2 d-flex align-items-center justify-content-center bg-primary-subtle text-primary fw-bold" style="width:32px; height:32px;">
+                                {{ strtoupper(substr(auth()->user()->name ?? 'U', 0, 1)) }}
+                            </div>
+                        @endif
                         <div class="d-lg-flex align-items-center gap-1 d-none">
                             <h5 class="my-0">{{ auth()->user()->name ?? 'Kullanıcı' }}</h5>
                             <i class="ti ti-chevron-down align-middle"></i>

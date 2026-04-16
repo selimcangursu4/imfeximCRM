@@ -11,19 +11,28 @@ class TaskController extends Controller
 {
     public function index(Request $request)
     {
-        $userId = Auth::id();
+        $user = Auth::user();
+        $isAdmin = in_array($user->role ?? 'satis_danismani', ['admin', 'yonetici']);
 
         if ($request->ajax()) {
-            $tasks = Task::with('customer')
-                ->where('assigned_to', $userId)
-                ->orderBy('due_date', 'asc')
-                ->get();
+            $query = Task::with('customer')->orderBy('due_date', 'asc');
+            
+            if (!$isAdmin) {
+                // Sadece kendisine atananlar
+                $query->where('assigned_to', $user->id);
+            } else {
+                // Admin filtre uyguladıysa
+                if ($request->has('filter') && $request->filter == 'my') {
+                    $query->where('assigned_to', $user->id);
+                }
+            }
 
-            return response()->json(['data' => $tasks]);
+            return response()->json(['data' => $query->get()]);
         }
 
         $customers = Customer::select('id', 'name')->get();
-        return view('tasks.index', compact('customers'));
+        // Return isAdmin to view
+        return view('tasks.index', compact('customers', 'isAdmin'));
     }
 
     public function store(Request $request)

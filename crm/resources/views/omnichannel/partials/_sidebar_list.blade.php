@@ -11,7 +11,15 @@
                     elseif (optional($item->channel)->provider === 'telegram') $providerColor = '#0088cc';
                 @endphp
                 <span class="avatar-title text-white rounded-circle" style="background-color: {{ $providerColor }} !important;">
-                    {{ strtoupper(substr(optional($item->customer)->name ?? 'U', 0, 1)) }}
+                    @if (optional($item->channel)->provider === 'whatsapp')
+                        <i class="ti ti-brand-whatsapp fs-5"></i>
+                    @elseif (optional($item->channel)->provider === 'instagram')
+                        <i class="ti ti-brand-instagram fs-5"></i>
+                    @elseif (optional($item->channel)->provider === 'telegram')
+                        <i class="ti ti-brand-telegram fs-5"></i>
+                    @else
+                        <i class="ti ti-message-circle fs-5"></i>
+                    @endif
                 </span>
             </span>
             <span class="overflow-hidden">

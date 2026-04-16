@@ -1,14 +1,33 @@
 @extends('partials.master')
 @section('content')
 <div class="container-fluid">
-    <div class="page-title-head d-flex align-items-center">
-        <h4 class="fs-xl fw-bold m-0">Görev & Hatırlatmalar</h4>
+    <div class="page-title-head d-flex align-items-center mb-3">
+        <div class="flex-grow-1">
+            <h4 class="fs-xl fw-bold m-0">Görev & Hatırlatmalar</h4>
+        </div>
     </div>
 
-    <div class="card mt-4">
+    @if($isAdmin)
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="nav nav-pills p-1 bg-light rounded-pill d-inline-flex" id="taskFilters">
+                <a href="#" class="nav-link rounded-pill px-4 py-2 active filter-btn" data-filter="all">
+                    <i class="ti ti-list me-1"></i> Tüm Görevler
+                </a>
+                <a href="#" class="nav-link rounded-pill px-4 py-2 filter-btn" data-filter="my">
+                    <i class="ti ti-user-check me-1"></i> Bana Atananlar
+                </a>
+            </div>
+        </div>
+    </div>
+    @endif
+
+    <div class="card mt-2">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="card-title mb-0">Bana Atanan Görevler</h5>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTaskModal">Yeni Görev Ekle</button>
+            <h5 class="card-title mb-0">{{ $isAdmin ? 'Görev Listesi' : 'Bana Atanan Görevler' }}</h5>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTaskModal">
+                <i class="ti ti-plus me-1"></i> Yeni Görev Ekle
+            </button>
         </div>
         <div class="card-body">
             <table id="tasksTable" class="table table-striped table-bordered dt-responsive nowrap w-100">
@@ -84,8 +103,15 @@
 @section('scripts')
 <script>
 $(document).ready(function() {
+    var currentFilter = 'all';
+    
     var table = $('#tasksTable').DataTable({
-        ajax: '{{ route("tasks.index") }}',
+        ajax: {
+            url: '{{ route("tasks.index") }}',
+            data: function (d) {
+                d.filter = currentFilter;
+            }
+        },
         columns: [
             { data: 'title' },
             { 
@@ -112,6 +138,15 @@ $(document).ready(function() {
             }}
         ],
         language: { url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/tr.json' }
+    });
+
+    // Filter Buttons
+    $('.filter-btn').click(function(e) {
+        e.preventDefault();
+        $('.filter-btn').removeClass('active');
+        $(this).addClass('active');
+        currentFilter = $(this).data('filter');
+        table.ajax.reload();
     });
 
     $('#addTaskForm').submit(function(e) {

@@ -32,7 +32,7 @@ class UserController extends Controller
         $filteredRecords = $query->count();
 
         // Order
-        $columns = ['id', 'name', 'email', 'created_at'];
+        $columns = ['id', 'name', 'email', 'role', 'department', 'created_at'];
         $orderColumnIndex = $request->input('order.0.column', 0);
         $orderDir = $request->input('order.0.dir', 'desc');
         $orderColumn = $columns[$orderColumnIndex] ?? 'id';
@@ -64,6 +64,8 @@ class UserController extends Controller
                 'max:255',
                 Rule::unique('users')->ignore($request->id),
             ],
+            'role' => 'required|string|in:admin,yonetici,web_developer,satis_danismani',
+            'department' => 'nullable|string|max:255',
         ];
 
         if (!$request->id) {
@@ -78,6 +80,8 @@ class UserController extends Controller
             'company_id' => $companyId,
             'name' => $request->name,
             'email' => $request->email,
+            'role' => $request->role,
+            'department' => $request->department,
         ];
 
         if ($request->filled('password')) {

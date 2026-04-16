@@ -115,6 +115,12 @@
                 </a>
             </li>
             <li class="side-nav-item">
+                <a href="{{ route('products.index') }}" class="side-nav-link">
+                    <span class="menu-icon"><i data-lucide="package"></i></span>
+                    <span class="menu-text">Ürünler & Hizmetler</span>
+                </a>
+            </li>
+            <li class="side-nav-item">
                 <a href="{{ route('reports.index') }}" class="side-nav-link">
                     <span class="menu-icon"><i data-lucide="bar-chart-3"></i></span>
                     <span class="menu-text">Raporlar</span>

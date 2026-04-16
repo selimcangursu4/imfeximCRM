@@ -20,12 +20,23 @@ class ProfileController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,'.$user->id,
+            'phone' => 'nullable|string|max:50',
+            'birth_date' => 'nullable|date',
+            'gender' => 'nullable|in:Belirtilmemiş,Erkek,Kadın,Diğer',
+            'profile_photo' => 'nullable|image|max:2048', // max 2MB
         ]);
 
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-        ]);
+        $data = $request->only(['name', 'email', 'phone', 'birth_date', 'gender']);
+
+        // Only allow role/department changes if admin optionally, but for profile, user shouldn't change their own role perhaps? 
+        // We will keep role/department out of user's own profile self-update unless they are Admin. Usually handled in User Management.
+
+        if ($request->hasFile('profile_photo')) {
+            $path = $request->file('profile_photo')->store('profile-photos', 'public');
+            $data['profile_photo'] = $path;
+        }
+
+        $user->update($data);
 
         return redirect()->back()->with('success', 'Profil bilgileriniz başarıyla güncellendi.');
     }
